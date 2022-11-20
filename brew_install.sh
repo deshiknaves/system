@@ -1,4 +1,7 @@
 #! /bin/bash
+
+set -e
+
 echo "🔍 Checking for Homebrew..."
 which -s brew  > /dev/null
 if [[ $? != 0 ]] ; then

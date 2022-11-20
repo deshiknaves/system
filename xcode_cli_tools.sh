@@ -1,4 +1,7 @@
 #! /bin/bash
+
+set -e
+
 echo "🔍 Checking for XCode Select..."
 xcode-select -p &>/dev/null
 if [[ $? != 0 ]] ; then

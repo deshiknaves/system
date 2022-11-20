@@ -1,5 +1,7 @@
 #! /bin/bash
 
+set -e
+
 function brew_install() {
     echo "🔍 Checking for $2..."
     if brew list $1 &>/dev/null; then
