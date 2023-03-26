@@ -29,6 +29,8 @@ brew_install "yarn" "Yarn"
 brew_install "fig" "Fig"
 brew_install "rocket" "Rocket"
 brew_install "raycast" "Raycast"
+brew_install "discord" "Discord"
+brew_install "cron" "Cron"
 
 # Post install
 
