@@ -8,7 +8,7 @@ function mas_install() {
         echo "✅ $2 found"
     else
         echo "⏳ Installing $2"
-        brew install $1
+        mas install $1
         echo "✅ $2 installed"
     fi
 }
@@ -34,3 +34,4 @@ mas_install "682658836" "GarageBand"
 mas_install "905953485" "NordVPN"
 mas_install "409203825" "Numbers"
 mas_install "1289583905" "Pixelmator Pro"
+mas_install "1147396723" "WhatsApp Desktop"
