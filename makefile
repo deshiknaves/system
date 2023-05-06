@@ -1,10 +1,12 @@
 .PHONY: brew
 brew:
+	# Xcode command line tools
+	bash -c "./xcode_cli_tools.sh"
 	# Install homebrew
 	bash -c "./brew_install.sh"
 	# Install applications
 	bash -c "./applications.sh"
 	# Install terminal tools
-	bash -c "./space_ship_install.sh"
+	bash -c "./spaceship_install.sh"
 	# Install Mac App Store applications
 	bash -c "./mas_install.sh"
