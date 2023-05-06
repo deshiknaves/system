@@ -31,6 +31,9 @@ brew_install "rocket" "Rocket"
 brew_install "raycast" "Raycast"
 brew_install "discord" "Discord"
 brew_install "cron" "Cron"
+brew_install "contexts" "Contexts"
+brew_install "awscli" "AWS CLI"
+brew_install "bat" "Bat"
 
 # Post install
 
