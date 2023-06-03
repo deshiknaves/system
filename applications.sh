@@ -34,6 +34,13 @@ brew_install "cron" "Cron"
 brew_install "contexts" "Contexts"
 brew_install "awscli" "AWS CLI"
 brew_install "bat" "Bat"
+brew_install "obsidian" "Obsidian"
+brew_install "pyenv" "Pyenv"
+brew_install "neovim" "Neovim"
+brew_install "z" "Z"
+brew_install "fzf" "FZF"
+brew_install "ksdiff" "KSDiff"
+brew_install "trash" "Trash"
 
 # Post install
 
