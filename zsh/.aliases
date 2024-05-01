@@ -1,0 +1,8 @@
+alias ..="cd .."
+alias desk="cd ~/Desktop"
+alias ...="cd ../../"
+alias server="open http://localhost:8000 && python -m SimpleHTTPServer"
+alias devel="cd ~/Developer"
+alias cat=bat
+alias vim=nvim
+alias ls="eza --color=always --long --git --no-filesize --icons --no-time --no-user --no-permissions"
