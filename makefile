@@ -10,3 +10,5 @@ brew:
 	bash -c "./spaceship_install.sh"
 	# Install Mac App Store applications
 	bash -c "./mas_install.sh"
+	# Install dotfiles
+	bash -c "./dot_files.sh"

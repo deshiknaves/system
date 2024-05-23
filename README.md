@@ -36,4 +36,3 @@ orchestrates the install.
 ## TODO
 
 - [ ] Add a script to install all the fonts
-- [ ] Add a script to install all the dotfiles

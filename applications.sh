@@ -8,7 +8,11 @@ function brew_install() {
         echo "✅ $2 found"
     else
         echo "⏳ Installing $2"
-        brew install $1
+        if brew install $1; then
+            echo "✅ $2 installed"
+        else
+            echo "❌ $2 not installed"
+        fi
         echo "✅ $2 installed"
     fi
 }
