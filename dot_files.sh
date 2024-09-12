@@ -42,3 +42,4 @@ copy_file ./zsh/.aliases ~/.aliases
 copy_file ./nvim/init.lua ~/.config/nvim/init.lua
 copy_file ./zsh/.zshrc ~/.zshrc
 copy_file ./tmux/.tmux.conf ~/.tmux.conf
+copy_file ./aerospace/aerospace.toml ~/.config/aerospace/aerospace.toml
