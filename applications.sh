@@ -28,12 +28,9 @@ function brew_cask_install() {
     fi
 }
 
-brew_cask_install "aerospace" "Aerospace"
-brew_cask_install "fd" "FD"
 brew_cask_install "font-hack-nerd-font" "Hack Font"
 brew_install "1password-cli" "1Password CLI"
 brew_install "1password" "1Password"
-brew_install "aerospace" "Aerospace"
 brew_install "arc" "Arc"
 brew_install "awscli" "AWS CLI"
 brew_install "bat" "Bat"
@@ -42,6 +39,7 @@ brew_install "cron" "Cron"
 brew_install "discord" "Discord"
 brew_install "docker" "Docker"
 brew_install "eza" "Eza"
+brew_install "fd" "FD"
 brew_install "fzf" "FZF"
 brew_install "gh" "GitHub"
 brew_install "ghostty" "Ghostty"
