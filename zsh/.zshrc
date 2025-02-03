@@ -1,14 +1,8 @@
-# Fig pre block. Keep at the top of this file.
-[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/deshi/.oh-my-zsh"
-
-source ~/.aliases
-source ~/.envvars
-source ~/.nvm-autoload
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -85,7 +79,7 @@ export PATH=$HOME/.cargo/bin:$PATH
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions zsh-better-npm-completion yarn-completion docker docker-compose pyenv)
+plugins=(git zsh-autosuggestions zsh-better-npm-completion docker docker-compose pyenv)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -143,7 +137,10 @@ export NVM_DIR="$HOME/.nvm"
 
 if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
 
-# Fig post block. Keep at the bottom of this file.
-[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
-
 SPACESHIP_PROMPT_ASYNC=0
+
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+source ~/.aliases
+source ~/.envvars
+source ~/.nvm-autoload
