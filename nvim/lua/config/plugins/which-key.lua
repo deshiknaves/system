@@ -8,17 +8,17 @@ return {
     local which_key = require("which-key")
 
     which_key.add({
-      { "<leader>c", group = "Code" },
-      { "<leader>e", group = "Explore" },
-      { "<leader>f", group = "Find" },
-      { "<leader>gr", group = "Reference" },
-      { "<leader>h", group = "Hunks" },
-      { "<leader>l", group = "List" },
-      { "<leader>n", group = "No" },
-      { "<leader>r", group = "Rename" },
-      { "<leader>s", group = "Split" },
-      { "<leader>t", group = "Tabs" },
-      { "<leader>x", group = "Trouble" },
+      { "<leader>c", group = "[C]ode" },
+      { "<leader>e", group = "[E]xplore" },
+      { "<leader>f", group = "[F]ind" },
+      { "<leader>gr", group = "[G]et [R]eference" },
+      { "<leader>h", group = "[H]unks" },
+      { "<leader>l", group = "[L]ist" },
+      { "<leader>n", group = "[N]o" },
+      { "<leader>r", group = "[R]eame" },
+      { "<leader>s", group = "[S]plit" },
+      { "<leader>t", group = "[T]abs" },
+      { "<leader>x", group = "[X] Trouble" },
     })
   end,
   opts = {

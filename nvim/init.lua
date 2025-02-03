@@ -1,3 +1,6 @@
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
 require("config.lazy")
 
 local opt = vim.opt
@@ -5,6 +8,8 @@ local opt = vim.opt
 opt.relativenumber = true
 opt.number = true
 opt.autoindent = true
+
+vim.opt.undofile = true
 
 opt.ignorecase = true
 opt.smartcase = true
@@ -20,9 +25,20 @@ opt.backspace = { "indent", "eol", "start" }
 opt.splitright = true
 opt.splitbelow = true
 
+vim.opt.list = true
+vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+
+-- Decrease update time
+opt.updatetime = 250
+
+-- Decrease mapped sequence wait time
+opt.timeoutlen = 300
+
 -- Spaces instead of tabs
 vim.o.shiftwidth = 4
 vim.opt.clipboard = "unnamedplus"
+
+vim.opt.inccommand = "split"
 
 vim.api.nvim_create_autocmd("TextYankPost", {
   desc = "Highlight when yanking (copying) text",
@@ -56,5 +72,6 @@ end)
 
 vim.keymap.set("n", "-", "<cmd>Oil<CR>")
 
+-- Spell checking
 vim.opt.spelllang = "en_us"
 vim.opt.spell = true

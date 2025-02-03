@@ -7,7 +7,7 @@ return {
       "windwp/nvim-ts-autotag",
     },
     config = function()
-      require 'nvim-treesitter.configs'.setup {
+      require("nvim-treesitter.configs").setup({
         -- A list of parser names, or "all" (the listed parsers MUST always be installed)
         ensure_installed = {
           "json",
@@ -71,7 +71,7 @@ return {
             node_decremental = "<bs>",
           },
         },
-      }
-    end
-  }
+      })
+    end,
+  },
 }
