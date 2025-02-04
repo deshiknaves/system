@@ -22,10 +22,10 @@ keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment number" })
 keymap.set("n", "<leader>-", "<C-x>", { desc = "Decrement number" })
 
 -- Window  management
-keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })
-keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" })
-keymap.set("n", "<leader>se", "<C-w>=", { desc = "Equalize windows" })
-keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current window" })
+keymap.set("n", "<leader>wv", "<C-w>v", { desc = "Split [W]indow vertically" })
+keymap.set("n", "<leader>wh", "<C-w>s", { desc = "Split [W]indow horizontally" })
+keymap.set("n", "<leader>we", "<C-w>=", { desc = "[E]qualize [W]indows" })
+keymap.set("n", "<leader>wx", "<cmd>close<CR>", { desc = "Close current [W]indow" })
 
 -- Tabs management
 keymap.set("n", "<leader>to", "<cmd>tabnew<CR>", { desc = "New tab" })
