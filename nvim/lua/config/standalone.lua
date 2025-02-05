@@ -37,6 +37,12 @@ vim.opt.clipboard = "unnamedplus"
 
 vim.opt.inccommand = "split"
 
+-- Import configuration from standalone
+require("config.standalone.floaterminal")
+require("config.standalone.keymaps")
+require("config.standalone.menu")
+require("config.standalone.options")
+
 vim.api.nvim_create_autocmd("TextYankPost", {
   desc = "Highlight when yanking (copying) text",
   group = vim.api.nvim_create_augroup("kickstart-hightlight-yank", { clear = true }),
