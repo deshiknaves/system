@@ -12,3 +12,5 @@ brew:
 	bash -c "./mas_install.sh"
 	# Install dotfiles
 	bash -c "./dot_files.sh"
+	# Sync Nvim Config
+	bash -c "./sync_nvim_config.sh from"
