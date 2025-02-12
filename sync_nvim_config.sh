@@ -7,16 +7,25 @@ source ./sync_directory.sh
 # Set $1 to a variable
 DIRECTION=$1
 
-# Check that DIRECTION is either "to" or "from"
-if [ "$DIRECTION" != "to" ] && [ "$DIRECTION" != "from" ]; then
-    echo "❌ Invalid direction. Use 'to' or 'from'."
+if [ "$DIRECTION" != "--push" ] && [ "$DIRECTION" != "--pull" ]; then
+    echo "❌ Invalid direction. Use '--push' or '--pull'."
     exit 1
 fi
 
-if [ "$DIRECTION" == "to" ]; then
-    echo "🔄 Syncing dotfiles to remote..."
-    sync_directory ~/.config/nvim . "nvim config"
-elif [ "$DIRECTION" == "from" ]; then
-    echo "🔄 Syncing dotfiles from remote..."
-    sync_directory ./nvim ~/.config "nvim config"
+if [ "$DIRECTION" == "--push" ]; then
+    # Not prompting here as we can always revert from the git history
+    echo "🔄 Syncing Neovim config to the system respoistory..."
+
+    sync_directory ~/.config/nvim .
+elif [ "$DIRECTION" == "--pull" ]; then
+    # Add a confirmation prompt
+    read -p "Are you sure you want to overwrite your Neovim config from the respoistory? (y/n) " -n 1 -r
+
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+	echo "🔄 Syncing Neovim config from system respoistory..."
+	sync_directory ./nvim ~/.config "nvim config"
+    else
+	echo "❌ Sync cancelled."
+	exit 1
+    fi
 fi
