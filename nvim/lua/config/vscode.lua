@@ -36,3 +36,23 @@ end)
 keymap.set("n", "<leader>tf", function()
   vscode.call("workbench.action.moveEditorToNextGroup")
 end)
+
+-- File management
+
+keymap.set("n", "<leader>ff", function()
+  vscode.call("workbench.action.quickOpen")
+end)
+
+keymap.set("n", "<leader>fe", function()
+  vscode.call("workbench.action.openRecent")
+end)
+
+-- Go to next problem
+keymap.set("n", "<leader>xn", function()
+  vscode.call("editor.action.marker.next")
+end)
+
+-- Go to previous problem
+keymap.set("n", "<leader>xp", function()
+  vscode.call("editor.action.marker.prev")
+end)
