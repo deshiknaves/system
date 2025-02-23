@@ -9,6 +9,7 @@ return {
 
     which_key.add({
       { "<leader>c", group = "[C]ode" },
+      { "<leader>d", group = "[D]ebugger" },
       { "<leader>e", group = "[E]xplore" },
       { "<leader>f", group = "[F]ind" },
       { "<leader>gr", group = "[G]et [R]eference" },
