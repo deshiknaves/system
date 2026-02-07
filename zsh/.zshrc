@@ -149,5 +149,5 @@ export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 set rtp+=/opt/homebrew/opt/fzf
 
-eval "$(zoxide init zsh)"
+eval "$(zoxide init --cmd cd zsh)"
 export PATH="$HOME/.local/bin:$PATH"
