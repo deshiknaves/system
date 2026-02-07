@@ -4,6 +4,10 @@
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/deshi/.oh-my-zsh"
 
+source ~/.aliases
+source ~/.envvars
+source ~/.nvm-autoload
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -79,7 +83,7 @@ export PATH=$HOME/.cargo/bin:$PATH
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions zsh-better-npm-completion docker docker-compose pyenv)
+plugins=(git zsh-autosuggestions zsh-better-npm-completion docker docker-compose)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -109,13 +113,12 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-export PATH=/opt/homebrew/bin:/Users/deshi/.pyenv/bin:/Users/deshi/.cargo/bin:/usr/local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Users/deshi/.cargo/bin:/Users/deshi/.fig/bin
+export PATH=/opt/homebrew/bin:/Users/deshi/.pyenv/bin:/Users/deshi/.cargo/bin:/usr/local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Users/deshi/.cargo/bin
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 export PIPENV_PYTHON="$PYENV_ROOT/shims/python"
 
 eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
 export PYENV_ROOT="$(pyenv root)"
 export PATH="$PYENV_ROOT/shims:$PATH"
 
@@ -137,10 +140,14 @@ export NVM_DIR="$HOME/.nvm"
 
 if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
 
+# Fig post block. Keep at the bottom of this file.
+[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
+
 SPACESHIP_PROMPT_ASYNC=0
+export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
 
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+set rtp+=/opt/homebrew/opt/fzf
 
-source ~/.aliases
-source ~/.envvars
-source ~/.nvm-autoload
+eval "$(zoxide init zsh)"
+export PATH="$HOME/.local/bin:$PATH"
