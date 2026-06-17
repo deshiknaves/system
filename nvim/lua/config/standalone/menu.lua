@@ -2,7 +2,7 @@ vim.cmd [[
   aunmenu PopUp
   anoremenu PopUp.Inspect     <cmd>Inspect<CR>
   amenu PopUp.-1-             <NOP>
-  anoremenu PopUp.Definition  <cmd>lua vim.lsp.definition()<CR>
+  anoremenu PopUp.Definition  <cmd>lua vim.lsp.buf.definition()<CR>
   anoremenu PopUp.References  <cmd>Telescope lsp_references<CR>
   anoremenu PopUp.Back        <C-t>
   amenu PopUp.-2-             <NOP>
