@@ -5,11 +5,10 @@ return {
     local lint = require("lint")
 
     lint.linters_by_ft = {
-      -- javascript = { "eslint_d" },
-      -- typescript = { "eslint_d" },
-      -- javascriptreact = { "eslint_d" },
-      -- typescriptreact = { "eslint_d" },
-      -- svelte = { "eslint_d" },
+      javascript = { "oxlint" },
+      typescript = { "oxlint" },
+      javascriptreact = { "oxlint" },
+      typescriptreact = { "oxlint" },
       python = { "pylint" },
     }
 
@@ -18,6 +17,8 @@ return {
     vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
       group = lint_augroup,
       callback = function()
+        local local_bin = vim.fn.findfile("node_modules/.bin/oxlint", ".;")
+        lint.linters.oxlint.cmd = local_bin ~= "" and local_bin or "oxlint"
         lint.try_lint()
       end,
     })

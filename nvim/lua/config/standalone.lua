@@ -78,3 +78,4 @@ vim.keymap.set("n", "-", "<cmd>Oil<CR>")
 -- Spell checking
 vim.opt.spelllang = "en_us"
 vim.opt.spell = true
+vim.api.nvim_set_hl(0, "SpellBad", { undercurl = true, sp = "#6699ff" })

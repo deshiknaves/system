@@ -33,9 +33,12 @@ return {
       -- See the full "keymap" documentation for information on defining your own keymap.
       keymap = {
         preset = 'enter',
-        -- cmdline = {
-        --   preset = "default"
-        -- }
+      },
+
+      cmdline = {
+        completion = {
+          menu = { auto_show = true },
+        },
       },
 
       appearance = {

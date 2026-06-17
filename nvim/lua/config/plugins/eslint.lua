@@ -1,6 +1,7 @@
 return {
   {
     "esmuellert/nvim-eslint",
+    enabled = false,
     config = function()
       local capabilities = require("blink.cmp").get_lsp_capabilities()
 

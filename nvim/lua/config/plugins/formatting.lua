@@ -4,12 +4,21 @@ return {
   config = function()
     local conform = require("conform")
 
+    conform.formatters.oxfmt = {
+      command = function(_, ctx)
+        local local_bin = vim.fn.findfile("node_modules/.bin/oxfmt", ctx.dirname .. ";")
+        return local_bin ~= "" and local_bin or "oxfmt"
+      end,
+      args = { "--stdin-filepath", "$FILENAME" },
+      stdin = true,
+    }
+
     conform.setup({
       formatters_by_ft = {
-        javascript = { "prettier" },
-        typescript = { "prettier" },
-        javascriptreact = { "prettier" },
-        typescriptreact = { "prettier" },
+        javascript = { "oxfmt" },
+        typescript = { "oxfmt" },
+        javascriptreact = { "oxfmt" },
+        typescriptreact = { "oxfmt" },
         svelte = { "prettier" },
         css = { "prettier" },
         html = { "prettier" },

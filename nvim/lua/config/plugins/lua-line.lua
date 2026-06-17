@@ -55,6 +55,15 @@ return {
         theme = my_lualine_theme,
       },
       sections = {
+        lualine_c = {
+          {
+            "filename",
+            -- blink.cmp shows [Scratch] in command mode; hide filename to avoid it.
+            cond = function()
+              return vim.fn.mode() ~= "c"
+            end,
+          },
+        },
         lualine_x = {
           {
             lazy_status.updates,

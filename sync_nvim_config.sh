@@ -14,18 +14,18 @@ fi
 
 if [ "$DIRECTION" == "--push" ]; then
     # Not prompting here as we can always revert from the git history
-    echo "🔄 Syncing Neovim config to the system respoistory..."
+    echo "🔄 Syncing Neovim config to the system repository..."
 
     sync_directory ~/.config/nvim .
 elif [ "$DIRECTION" == "--pull" ]; then
     # Add a confirmation prompt
-    read -p "Are you sure you want to overwrite your Neovim config from the respoistory? (y/n) " -n 1 -r
+    read -p "Are you sure you want to overwrite your Neovim config from the repository? (y/n) " -n 1 -r
 
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-	echo "🔄 Syncing Neovim config from system respoistory..."
+	echo "🔄 Syncing Neovim config from system repository..."
 	sync_directory ./nvim ~/.config "nvim config"
     else
-	echo "❌ Sync cancelled."
+	echo "❌ Sync canceled."
 	exit 1
     fi
 fi

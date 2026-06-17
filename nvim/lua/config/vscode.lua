@@ -56,3 +56,13 @@ end)
 keymap.set("n", "<leader>xp", function()
   vscode.call("editor.action.marker.prev")
 end)
+
+-- Refactor
+keymap.set("n", "<leader>rn", function()
+  vscode.call("editor.action.rename")
+end)
+
+-- Code Folding
+keymap.set("n", "<leader>cf", function()
+  vscode.call("editor.fold")
+end)
