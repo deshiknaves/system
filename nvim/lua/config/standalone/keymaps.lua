@@ -11,8 +11,16 @@ keymap.set("n", "gra", vim.lsp.buf.code_action, { desc = "Code action" })
 keymap.set("n", "grr", vim.lsp.buf.references, { desc = "Show references" })
 
 -- Quickview
-keymap.set("n", "<M-j>", "<cmd>cnext<CR>", { desc = "Next quickfix" })
-keymap.set("n", "<M-k>", "<cmd>cprev<CR>", { desc = "Previous quickfix" })
+keymap.set("n", "<leader>j", "<cmd>cnext<CR>", { desc = "Next quickfix" })
+keymap.set("n", "<leader>k", "<cmd>cprev<CR>", { desc = "Previous quickfix" })
+
+-- Move lines
+keymap.set("n", "<M-j>", "<cmd>m .+1<CR>==", { desc = "Move line down" })
+keymap.set("n", "<M-k>", "<cmd>m .-2<CR>==", { desc = "Move line up" })
+keymap.set("i", "<M-j>", "<Esc><cmd>m .+1<CR>==gi", { desc = "Move line down" })
+keymap.set("i", "<M-k>", "<Esc><cmd>m .-2<CR>==gi", { desc = "Move line up" })
+keymap.set("v", "<M-j>", ":m '>+1<CR>gv=gv", { desc = "Move block down" })
+keymap.set("v", "<M-k>", ":m '<-2<CR>gv=gv", { desc = "Move block up" })
 
 -- Highlights
 keymap.set("n", "<leader>nh", "<cmd>noh<CR>", { desc = "Clear highlights" })
