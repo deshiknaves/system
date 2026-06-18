@@ -33,6 +33,22 @@ return {
         "python",
       })
 
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function(args)
+          pcall(vim.treesitter.start, args.buf)
+        end,
+      })
+
+      vim.api.nvim_create_autocmd("SessionLoadPost", {
+        callback = function()
+          for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+            if vim.api.nvim_buf_is_loaded(buf) then
+              pcall(vim.treesitter.start, buf)
+            end
+          end
+        end,
+      })
+
       vim.api.nvim_create_autocmd("BufReadPost", {
         callback = function(args)
           local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(args.buf))

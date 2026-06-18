@@ -54,7 +54,6 @@ return {
     },
     config = function()
       local capabilities = require("blink.cmp").get_lsp_capabilities()
-      local lspconfig = require("lspconfig")
       local mason_lspconfig = require("mason-lspconfig")
       local keymap = vim.keymap
 
@@ -108,6 +107,7 @@ return {
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header.
           map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+          map("<leader>cd", vim.diagnostic.open_float, "[C]ode [D]iagnostic")
 
           opts.desc = "Restart LSP"
           keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary:what
@@ -118,7 +118,7 @@ return {
           --
           -- When you move your cursor, the highlights will be cleared (the second autocommand).
           local client = vim.lsp.get_client_by_id(event.data.client_id)
-          if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+          if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
             local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
             vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
               buffer = event.buf,
@@ -145,7 +145,7 @@ return {
           -- code, if the language server you are using supports them
           --
           -- This may be unwanted, since they displace some of your code
-          if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+          if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
             map("<leader>th", function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
             end, "[T]oggle Inlay [H]ints")
@@ -180,49 +180,41 @@ return {
         automatic_enable = false,
       })
 
-      -- default setup for servers that need no custom config
-      local default_servers = { "ts_ls", "html", "cssls", "tailwindcss", "prismals", "pyright" }
-      for _, server in ipairs(default_servers) do
-        lspconfig[server].setup({ capabilities = capabilities })
-      end
+      vim.lsp.config("*", { capabilities = capabilities })
 
-      lspconfig["svelte"].setup({
-        capabilities = capabilities,
+      vim.lsp.enable({ "ts_ls", "html", "cssls", "tailwindcss", "prismals", "pyright" })
+
+      vim.lsp.config("svelte", {
         on_attach = function(client)
           vim.api.nvim_create_autocmd("BufWritePost", {
             pattern = { "*.js", "*.ts" },
             callback = function(ctx)
-              -- Here use ctx.match instead of ctx.file
               client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
             end,
           })
         end,
       })
+      vim.lsp.enable("svelte")
 
-      lspconfig["graphql"].setup({
-        capabilities = capabilities,
+      vim.lsp.config("graphql", {
         filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
       })
+      vim.lsp.enable("graphql")
 
-      lspconfig["emmet_ls"].setup({
-        capabilities = capabilities,
+      vim.lsp.config("emmet_ls", {
         filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
       })
+      vim.lsp.enable("emmet_ls")
 
-      lspconfig["lua_ls"].setup({
-        capabilities = capabilities,
+      vim.lsp.config("lua_ls", {
         settings = {
           Lua = {
-            -- make the language server recognize "vim" global
-            diagnostics = {
-              globals = { "vim" },
-            },
-            completion = {
-              callSnippet = "Replace",
-            },
+            diagnostics = { globals = { "vim" } },
+            completion = { callSnippet = "Replace" },
           },
         },
       })
+      vim.lsp.enable("lua_ls")
     end,
   },
 }
