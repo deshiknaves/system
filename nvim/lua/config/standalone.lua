@@ -33,6 +33,7 @@ opt.timeoutlen = 300
 
 -- Spaces instead of tabs
 vim.o.shiftwidth = 4
+vim.opt.expandtab = true
 vim.opt.clipboard = "unnamedplus"
 
 vim.opt.inccommand = "split"

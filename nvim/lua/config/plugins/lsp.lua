@@ -33,6 +33,12 @@ return {
     end,
   },
   {
+    "pmizio/typescript-tools.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+    opts = {},
+  },
+  {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
@@ -53,7 +59,7 @@ return {
       },
     },
     config = function()
-      local capabilities = require("blink.cmp").get_lsp_capabilities()
+      local capabilities = require("blink.cmp").get_lsp_capabilities(nil, true)
       local mason_lspconfig = require("mason-lspconfig")
       local keymap = vim.keymap
 
@@ -166,7 +172,6 @@ return {
 
       mason_lspconfig.setup({
         ensure_installed = {
-          "ts_ls",
           "html",
           "cssls",
           "tailwindcss",
@@ -182,7 +187,39 @@ return {
 
       vim.lsp.config("*", { capabilities = capabilities })
 
-      vim.lsp.enable({ "ts_ls", "html", "cssls", "tailwindcss", "prismals", "pyright" })
+      -- Next.js TS plugin bug (code 71007): propType.getStart() returns an
+      -- offset from the types file, but `file` is set to the tsx file.
+      -- Remap by searching the buffer for the prop name in its destructuring.
+      local orig_diag = vim.lsp.handlers["textDocument/publishDiagnostics"]
+      vim.lsp.handlers["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
+        if result and result.diagnostics then
+          local bufnr = vim.uri_to_bufnr(result.uri or "")
+          if bufnr and vim.api.nvim_buf_is_loaded(bufnr) then
+            local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+            for _, d in ipairs(result.diagnostics) do
+              if d.code == 71007 then
+                local prop = d.message:match('"(%w+)" is a function')
+                if prop then
+                  for lnum0, line in ipairs(lines) do
+                    -- match prop in a destructuring line: leading spaces + propName alone or with default/comma
+                    local col0 = line:find('%f[%w_]' .. prop .. '%f[%W_]')
+                    if col0 and line:match('^%s+' .. prop .. '%f[%W_]') then
+                      d.range.start.line = lnum0 - 1
+                      d.range.start.character = col0 - 1
+                      d.range['end'].line = lnum0 - 1
+                      d.range['end'].character = col0 - 1 + #prop
+                      break
+                    end
+                  end
+                end
+              end
+            end
+          end
+        end
+        orig_diag(err, result, ctx, config)
+      end
+
+      vim.lsp.enable({ "html", "cssls", "tailwindcss", "prismals", "pyright" })
 
       vim.lsp.config("svelte", {
         on_attach = function(client)
