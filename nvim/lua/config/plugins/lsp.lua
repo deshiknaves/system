@@ -31,9 +31,13 @@ return {
   },
   {
     "pmizio/typescript-tools.nvim",
-    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig", "saghen/blink.cmp" },
     ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
-    opts = {},
+    opts = function()
+      return {
+        capabilities = require("blink.cmp").get_lsp_capabilities(),
+      }
+    end,
   },
   {
     "neovim/nvim-lspconfig",
