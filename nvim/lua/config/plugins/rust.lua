@@ -32,12 +32,14 @@ return {
       "antoinemadec/FixCursorHold.nvim",
       "nvim-treesitter/nvim-treesitter",
       "rouge8/neotest-rust",
+      "marilari88/neotest-vitest",
     },
-    ft = { "rust" },
+    ft = { "rust", "javascript", "javascriptreact", "typescript", "typescriptreact" },
     config = function()
       require("neotest").setup({
         adapters = {
           require("neotest-rust"),
+          require("neotest-vitest"),
         },
       })
 
