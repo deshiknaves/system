@@ -1,6 +1,24 @@
 return {
   {
     "github/copilot.vim",
+    init = function()
+      vim.g.copilot_no_tab_map = true
+    end,
+    config = function()
+      vim.keymap.set('i', '<Tab>', function()
+        local accept = vim.fn['copilot#Accept']('')
+        if accept ~= '' then
+          vim.api.nvim_feedkeys(
+            vim.api.nvim_replace_termcodes(accept, true, false, true),
+            'i',
+            true
+          )
+          vim.schedule(function() vim.cmd('retab') end)
+          return ''
+        end
+        return vim.api.nvim_replace_termcodes('<Tab>', true, true, true)
+      end, { expr = true, replace_keycodes = false })
+    end,
   },
   {
     'saghen/blink.cmp',
