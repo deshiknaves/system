@@ -18,6 +18,7 @@ return {
       { "<leader>r", group = "[R]eame" },
       { "<leader>s", group = "[S]plit" },
       { "<leader>t", group = "[T]abs" },
+      { "<leader>T", group = "[T]ests" },
       { "<leader>x", group = "[X] Trouble" },
     })
   end,

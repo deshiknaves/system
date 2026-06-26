@@ -47,10 +47,10 @@ return {
       local map = function(keys, func, desc)
         vim.keymap.set("n", keys, func, { desc = "Neotest: " .. desc })
       end
-      map("<leader>tt", function() neotest.run.run() end, "Run nearest test")
-      map("<leader>tf", function() neotest.run.run(vim.fn.expand("%")) end, "Run file")
-      map("<leader>ts", function() neotest.summary.toggle() end, "Toggle summary")
-      map("<leader>to", function() neotest.output.open({ enter = true }) end, "Show output")
+      map("<leader>Tt", function() neotest.run.run() end, "Run nearest test")
+      map("<leader>Tf", function() neotest.run.run(vim.fn.expand("%")) end, "Run file")
+      map("<leader>Ts", function() neotest.summary.toggle() end, "Toggle summary")
+      map("<leader>To", function() neotest.output.open({ enter = true }) end, "Show output")
     end,
   },
 }
