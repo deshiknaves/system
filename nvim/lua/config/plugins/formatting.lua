@@ -7,7 +7,9 @@ return {
     conform.formatters.oxfmt = {
       command = function(_, ctx)
         local local_bin = vim.fn.findfile("node_modules/.bin/oxfmt", ctx.dirname .. ";")
-        return local_bin ~= "" and local_bin or "oxfmt"
+        if local_bin ~= "" then return local_bin end
+        local cwd_bin = vim.fn.findfile("node_modules/.bin/oxfmt", vim.fn.getcwd() .. ";")
+        return cwd_bin ~= "" and cwd_bin or "oxfmt"
       end,
       args = { "--stdin-filepath", "$FILENAME" },
       stdin = true,
