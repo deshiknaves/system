@@ -36,6 +36,13 @@ return {
       keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "[F]ind [H]elp" })
       keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "[F]ind [K]eymaps" })
       keymap.set("n", "<leader>ff", builtin.find_files, { desc = "[F]ind [F]iles" })
+      keymap.set("n", "<leader>fa", function()
+        builtin.find_files({
+          hidden = true,
+          no_ignore = true,
+          file_ignore_patterns = { "node_modules" },
+        })
+      end, { desc = "[F]ind [A]ll files (incl. hidden/ignored)" })
       keymap.set("n", "<leader>fs", builtin.builtin, { desc = "[F]ind [S]elect Telescope" })
       keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "[F]ind current [W]ord" })
       keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "[F]ind by [G]rep" })
