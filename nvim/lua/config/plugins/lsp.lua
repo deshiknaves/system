@@ -32,7 +32,9 @@ return {
   {
     "pmizio/typescript-tools.nvim",
     dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig", "saghen/blink.cmp" },
-    ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+    -- Loaded on demand from the FileType autocmd below (not via `ft`), since
+    -- it can only run against TypeScript < 7 (no lib/tsserver.js in TS 7+).
+    lazy = true,
     opts = function()
       return {
         capabilities = require("blink.cmp").get_lsp_capabilities(),
@@ -187,6 +189,37 @@ return {
       })
 
       vim.lsp.config("*", { capabilities = capabilities })
+
+      -- TypeScript 7+ dropped lib/tsserver.js, which typescript-tools.nvim
+      -- depends on, so it can only run against TS < 7. Use nvim-lspconfig's
+      -- built-in tsgo (native-preview) config for TS 7+ projects instead.
+      -- Decided once per session from the first ts/tsx/js/jsx buffer opened.
+      local function ts_major_version(root_dir)
+        local pkg_path = root_dir and vim.fs.joinpath(root_dir, "node_modules/typescript/package.json")
+        if not pkg_path or vim.fn.filereadable(pkg_path) == 0 then
+          return nil
+        end
+        local ok, pkg = pcall(vim.json.decode, table.concat(vim.fn.readfile(pkg_path), "\n"))
+        if not ok or not pkg.version then
+          return nil
+        end
+        return tonumber(pkg.version:match("^(%d+)"))
+      end
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+        once = true,
+        callback = function(event)
+          local root_dir = vim.fs.root(event.buf, { "package-lock.json", "yarn.lock", "pnpm-lock.yaml", "bun.lockb", "bun.lock", ".git" })
+          local major = ts_major_version(root_dir)
+
+          if major and major >= 7 then
+            vim.lsp.enable("tsgo")
+          else
+            require("lazy").load({ plugins = { "typescript-tools.nvim" } })
+          end
+        end,
+      })
 
       -- Next.js TS plugin bug (code 71007): propType.getStart() returns an
       -- offset from the types file, but `file` is set to the tsx file.
