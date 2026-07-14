@@ -40,7 +40,16 @@ return {
         builtin.find_files({
           hidden = true,
           no_ignore = true,
-          file_ignore_patterns = { "node_modules" },
+          file_ignore_patterns = {
+            "node_modules",
+            "%.venv",
+            "__pycache__",
+            "%.mypy_cache",
+            "%.ruff_cache",
+            "%.pytest_cache",
+            "%.turbo",
+            "%.git/",
+          },
         })
       end, { desc = "[F]ind [A]ll files (incl. hidden/ignored)" })
       keymap.set("n", "<leader>fs", builtin.builtin, { desc = "[F]ind [S]elect Telescope" })
