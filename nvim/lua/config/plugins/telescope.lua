@@ -36,19 +36,35 @@ return {
       keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "[F]ind [H]elp" })
       keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "[F]ind [K]eymaps" })
       keymap.set("n", "<leader>ff", builtin.find_files, { desc = "[F]ind [F]iles" })
+      -- Exclusions live in the fd invocation, not `file_ignore_patterns`: the
+      -- latter filters after the walk, so the cost of descending into
+      -- node_modules/.venv is still paid. `-E` prunes the traversal instead.
       keymap.set("n", "<leader>fa", function()
         builtin.find_files({
-          hidden = true,
-          no_ignore = true,
-          file_ignore_patterns = {
+          find_command = {
+            "fd",
+            "--type",
+            "f",
+            "--color",
+            "never",
+            "--hidden",
+            "--no-ignore",
+            "-E",
             "node_modules",
-            "%.venv",
+            "-E",
+            ".venv",
+            "-E",
             "__pycache__",
-            "%.mypy_cache",
-            "%.ruff_cache",
-            "%.pytest_cache",
-            "%.turbo",
-            "%.git/",
+            "-E",
+            ".mypy_cache",
+            "-E",
+            ".ruff_cache",
+            "-E",
+            ".pytest_cache",
+            "-E",
+            ".turbo",
+            "-E",
+            ".git",
           },
         })
       end, { desc = "[F]ind [A]ll files (incl. hidden/ignored)" })
