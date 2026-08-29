@@ -206,6 +206,26 @@ return {
         return tonumber(pkg.version:match("^(%d+)"))
       end
 
+      -- nvim-lspconfig's tsgo config only ever spawns a binary named `tsgo`,
+      -- which exists solely in @typescript/native-preview. Stable typescript@7
+      -- ships the same Go language server under the name `tsc` (see
+      -- node_modules/typescript/lib/getExePath.js: the bin is `tsgo` only when
+      -- the package name isn't `typescript`). Prefer the project's own binary
+      -- so diagnostics match what `tsc --noEmit` reports in CI; fall back to a
+      -- global `tsgo` for projects without a local install.
+      vim.lsp.config("tsgo", {
+        cmd = function(dispatchers, config)
+          local root_dir = (config or {}).root_dir
+          for _, name in ipairs({ "tsc", "tsgo" }) do
+            local local_cmd = root_dir and vim.fs.joinpath(root_dir, "node_modules/.bin", name)
+            if local_cmd and vim.fn.executable(local_cmd) == 1 then
+              return vim.lsp.rpc.start({ local_cmd, "--lsp", "--stdio" }, dispatchers)
+            end
+          end
+          return vim.lsp.rpc.start({ "tsgo", "--lsp", "--stdio" }, dispatchers)
+        end,
+      })
+
       vim.api.nvim_create_autocmd("FileType", {
         pattern = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
         once = true,
