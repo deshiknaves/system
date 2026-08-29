@@ -273,6 +273,33 @@ return {
         orig_diag(err, result, ctx, config)
       end
 
+      -- pyright does no interpreter discovery of its own: with no explicit
+      -- pythonPath it sees only the stdlib plus pyright's ./src heuristic, so
+      -- every third-party import (pydantic, fastapi, ...) reports unresolved.
+      -- Point it at the project's virtualenv when one exists.
+      local function venv_python(root_dir)
+        for _, dir in ipairs({ ".venv", "venv" }) do
+          local py = vim.fs.joinpath(root_dir or "", dir, "bin", "python")
+          if vim.fn.executable(py) == 1 then
+            return py
+          end
+        end
+      end
+
+      vim.lsp.config("pyright", {
+        -- Mutate settings in place: the client captures `config.settings` by
+        -- reference before before_init runs, so reassigning the table is a
+        -- no-op as far as the client is concerned.
+        before_init = function(_, config)
+          local py = venv_python(config.root_dir)
+          if py then
+            config.settings = config.settings or {}
+            config.settings.python = config.settings.python or {}
+            config.settings.python.pythonPath = py
+          end
+        end,
+      })
+
       vim.lsp.enable({ "html", "cssls", "tailwindcss", "prismals", "pyright" })
 
       vim.lsp.config("svelte", {

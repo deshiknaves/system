@@ -9,8 +9,17 @@ return {
       typescript = { "oxlint" },
       javascriptreact = { "oxlint" },
       typescriptreact = { "oxlint" },
-      python = { "pylint" },
+      python = { "ruff" },
     }
+
+    -- mypy needs the project's venv (plugins, installed stubs, editable src
+    -- packages); a global mypy reports phantom import errors. Resolve per
+    -- buffer, and only run it on write — it is too slow for BufEnter.
+    local function project_bin(bufnr, name)
+      local root = vim.fs.root(bufnr, { ".venv", "pyproject.toml", ".git" })
+      local bin = root and vim.fs.joinpath(root, ".venv", "bin", name)
+      return bin and vim.fn.executable(bin) == 1 and bin or name
+    end
 
     local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
 
@@ -19,7 +28,17 @@ return {
       callback = function()
         local local_bin = vim.fn.findfile("node_modules/.bin/oxlint", ".;")
         lint.linters.oxlint.cmd = local_bin ~= "" and local_bin or "oxlint"
+        lint.linters.ruff.cmd = project_bin(0, "ruff")
         lint.try_lint()
+      end,
+    })
+
+    vim.api.nvim_create_autocmd("BufWritePost", {
+      group = lint_augroup,
+      pattern = "*.py",
+      callback = function(args)
+        lint.linters.mypy.cmd = project_bin(args.buf, "mypy")
+        lint.try_lint("mypy")
       end,
     })
 
