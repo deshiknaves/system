@@ -8,6 +8,11 @@ return {
 
     require("auto-session").setup({
       suppressed_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
+      -- NvimTree's buffer isn't a normal file buffer; if it's the focused
+      -- window when a session is saved, restore lands on the tree instead
+      -- of the last real file. Close it before saving so the session only
+      -- ever captures real file buffers/layout.
+      pre_save_cmds = { "NvimTreeClose" },
       session_lens = {
         load_on_setup = true,
         theme_conf = { border = true },
