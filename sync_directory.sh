@@ -14,7 +14,7 @@ function sync_directory() {
     SOURCE_DIR=$1
     DEST_DIR=$2
 
-    if not [ -d "$SOURCE_DIR" ]; then
+    if ! [ -d "$SOURCE_DIR" ]; then
 	echo "❌ $SOURCE_DIR does not exist"
 	exit 1
     fi
