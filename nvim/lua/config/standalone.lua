@@ -36,6 +36,25 @@ vim.o.tabstop = 4
 vim.o.softtabstop = 4
 vim.o.shiftwidth = 4
 vim.opt.expandtab = true
+
+-- Over SSH there's no local pbcopy/pbpaste to shell out to, so `+`/`*`
+-- writes silently go nowhere. OSC52 has the terminal itself intercept the
+-- escape sequence and set its own clipboard instead, no remote binary
+-- needed. Only switch to it over SSH — locally pbcopy/pbpaste stay in use
+-- since they also support paste reliably, which OSC52 doesn't everywhere.
+if vim.env.SSH_TTY then
+  vim.g.clipboard = {
+    name = "OSC 52",
+    copy = {
+      ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+      ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+    },
+    paste = {
+      ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+      ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+    },
+  }
+end
 vim.opt.clipboard = "unnamedplus"
 
 vim.opt.inccommand = "split"
