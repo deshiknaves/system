@@ -78,23 +78,13 @@ return {
         -- Closing this split falls back to Vim's default "lowest window
         -- number" target, which is NvimTree whenever it's open (it's always
         -- the leftmost/first-created split). Remember where we came from and
-        -- restore it explicitly instead.
+        -- restore it explicitly instead, only when the split itself closes
+        -- (not when the job finishes) so focus stays on the results until
+        -- you're done with them.
         local origin_win = vim.api.nvim_get_current_win()
         vim.cmd("botright split | terminal cd " .. vim.fn.shellescape(package_root) .. " && cargo test")
         local term_win = vim.api.nvim_get_current_win()
         vim.cmd("startinsert")
-        vim.api.nvim_create_autocmd("TermClose", {
-          buffer = vim.api.nvim_get_current_buf(),
-          once = true,
-          callback = function()
-            if vim.api.nvim_win_is_valid(origin_win) then
-              vim.api.nvim_set_current_win(origin_win)
-            end
-          end,
-        })
-        -- If the terminal window itself gets closed manually (:q, <C-w>c)
-        -- before the job exits, still restore focus rather than falling
-        -- through to window #1.
         vim.api.nvim_create_autocmd("WinClosed", {
           pattern = tostring(term_win),
           once = true,
