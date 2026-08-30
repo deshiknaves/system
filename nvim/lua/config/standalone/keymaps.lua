@@ -22,6 +22,20 @@ keymap.set("i", "<M-k>", "<Esc><cmd>m .-2<CR>==gi", { desc = "Move line up" })
 keymap.set("v", "<M-j>", ":m '>+1<CR>gv=gv", { desc = "Move block down" })
 keymap.set("v", "<M-k>", ":m '<-2<CR>gv=gv", { desc = "Move block up" })
 
+-- Yank file path
+--- Copies the current buffer's path to the system clipboard, expanded by `modifier`.
+local function yank_path(modifier)
+  return function()
+    local path = vim.fn.expand("%" .. modifier)
+    vim.fn.setreg("+", path)
+    vim.notify("Copied: " .. path)
+  end
+end
+
+keymap.set("n", "<leader>yp", yank_path(""), { desc = "Yank relative file path" })
+keymap.set("n", "<leader>yP", yank_path(":p"), { desc = "Yank absolute file path" })
+keymap.set("n", "<leader>yn", yank_path(":t"), { desc = "Yank file name" })
+
 -- Highlights
 keymap.set("n", "<leader>nh", "<cmd>noh<CR>", { desc = "Clear highlights" })
 
