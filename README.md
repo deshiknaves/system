@@ -62,8 +62,8 @@ Run `just --list` to see them all.
 
 ## Packages
 
-Edit `home/.chezmoidata/packages.yaml`. Each group has `brews`, `casks` and
-`mas`:
+Edit `home/.chezmoidata/packages.yaml`. Each group has `taps`, `brews`, `casks`
+and `mas`:
 
 - `all`: every machine
 - `darwin`, `linux`: by OS

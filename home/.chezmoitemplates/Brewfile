@@ -1,6 +1,11 @@
 {{- $darwin := eq .chezmoi.os "darwin" }}
 {{- $groups := list "all" .chezmoi.os (get . "machine") }}
 {{- range $groups }}
+{{- range dig . "taps" (list) $.packages }}
+tap {{ . | quote }}
+{{- end }}
+{{- end }}
+{{- range $groups }}
 {{- range dig . "brews" (list) $.packages }}
 brew {{ . | quote }}
 {{- end }}

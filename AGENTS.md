@@ -23,7 +23,8 @@ package lists and the Neovim config.
   - `.chezmoi.toml.tmpl` - chezmoi config (`sourceDir`, `mode = "symlink"`,
     `machine` prompt)
   - `.chezmoidata/packages.yaml` - package lists
-  - `.chezmoitemplates/Brewfile` - Brewfile built from the lists
+  - `.chezmoitemplates/Brewfile` - Brewfile built from the lists (taps, brews,
+    casks)
   - `.chezmoitemplates/casks` - cask list as JSON, used by the Brewfile and the
     install script
   - `run_onchange_after_install-packages.sh.tmpl` - adopts hand-installed casks,
