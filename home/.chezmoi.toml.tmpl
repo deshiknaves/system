@@ -1,0 +1,6 @@
+{{- $machine := promptChoiceOnce . "machine" "Machine type" (list "personal" "work") -}}
+sourceDir = {{ joinPath .chezmoi.homeDir "Developer" "system" | quote }}
+mode = "symlink"
+
+[data]
+machine = {{ $machine | quote }}
