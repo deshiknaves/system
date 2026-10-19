@@ -39,4 +39,12 @@ echo "⏳ Restarting Dock, Finder and SystemUIServer"
 killall Dock Finder SystemUIServer || echo "⚠ Some processes were not running"
 
 echo "✅ macOS defaults applied"
+
+for ghostty_config in \
+  "$HOME/Library/Application Support/com.mitchellh.ghostty/config" \
+  "$HOME/Library/Application Support/com.mitchellh.ghostty/config.ghostty"; do
+  if [ -e "$ghostty_config" ]; then
+    echo "⚠ $ghostty_config overrides the repo Ghostty config"
+  fi
+done
 {{- end }}
