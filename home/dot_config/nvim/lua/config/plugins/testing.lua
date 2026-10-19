@@ -117,8 +117,12 @@ return {
           neotest.run.run(file)
         end
       end, "Run file")
-      map("<leader>Ts", function() neotest.summary.toggle() end, "Toggle summary")
-      map("<leader>To", function() neotest.output.open({ enter = true }) end, "Show output")
+      map("<leader>Ts", function()
+        neotest.summary.toggle()
+      end, "Toggle summary")
+      map("<leader>To", function()
+        neotest.output.open({ enter = true })
+      end, "Show output")
     end,
   },
 }

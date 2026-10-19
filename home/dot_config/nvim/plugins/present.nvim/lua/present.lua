@@ -72,20 +72,20 @@ M.start_presentation = function(opts)
     current_slide = math.min(current_slide + 1, #parsed.slides)
     vim.api.nvim_buf_set_lines(float.buf, 0, -1, false, parsed.slides[current_slide])
   end, {
-    buffer = float.buf
+    buffer = float.buf,
   })
 
   vim.keymap.set("n", "p", function()
     current_slide = math.max(current_slide - 1, 1)
     vim.api.nvim_buf_set_lines(float.buf, 0, -1, false, parsed.slides[current_slide])
   end, {
-    buffer = float.buf
+    buffer = float.buf,
   })
 
   vim.keymap.set("n", "q", function()
     vim.api.nvim_win_close(float.win, true)
   end, {
-    buffer = float.buf
+    buffer = float.buf,
   })
 
   vim.api.nvim_buf_set_lines(float.buf, 0, -1, false, parsed.slides[1])

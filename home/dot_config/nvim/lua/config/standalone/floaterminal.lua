@@ -4,7 +4,7 @@ local state = {
   floating = {
     buf = -1,
     win = -1,
-  }
+  },
 }
 
 local function create_floating_window(opts)
@@ -44,7 +44,7 @@ end
 
 local toggle_terminal = function()
   if not vim.api.nvim_win_is_valid(state.floating.win) then
-    state.floating = create_floating_window { buf = state.floating.buf }
+    state.floating = create_floating_window({ buf = state.floating.buf })
 
     if vim.bo[state.floating.buf].buftype ~= "terminal" then
       vim.cmd.terminal()

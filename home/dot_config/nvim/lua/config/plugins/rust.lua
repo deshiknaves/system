@@ -15,10 +15,16 @@ return {
               vim.keymap.set("n", keys, func, { buffer = bufnr, desc = "Rust: " .. desc })
             end
             -- Run the test (or other runnable) nearest the cursor
-            map("<leader>rt", function() vim.cmd.RustLsp("run") end, "Run nearest test/runnable")
+            map("<leader>rt", function()
+              vim.cmd.RustLsp("run")
+            end, "Run nearest test/runnable")
             -- Pick any testable in the file
-            map("<leader>rT", function() vim.cmd.RustLsp("testables") end, "Pick testable")
-            map("<leader>rd", function() vim.cmd.RustLsp("debuggables") end, "Debug nearest test/runnable")
+            map("<leader>rT", function()
+              vim.cmd.RustLsp("testables")
+            end, "Pick testable")
+            map("<leader>rd", function()
+              vim.cmd.RustLsp("debuggables")
+            end, "Debug nearest test/runnable")
           end,
         },
       }

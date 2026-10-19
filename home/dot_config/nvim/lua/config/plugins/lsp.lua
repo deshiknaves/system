@@ -229,7 +229,10 @@ return {
         pattern = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
         once = true,
         callback = function(event)
-          local root_dir = vim.fs.root(event.buf, { "package-lock.json", "yarn.lock", "pnpm-lock.yaml", "bun.lockb", "bun.lock", ".git" })
+          local root_dir = vim.fs.root(
+            event.buf,
+            { "package-lock.json", "yarn.lock", "pnpm-lock.yaml", "bun.lockb", "bun.lock", ".git" }
+          )
           local major = ts_major_version(root_dir)
 
           if major and major >= 7 then
@@ -255,12 +258,12 @@ return {
                 if prop then
                   for lnum0, line in ipairs(lines) do
                     -- match prop in a destructuring line: leading spaces + propName alone or with default/comma
-                    local col0 = line:find('%f[%w_]' .. prop .. '%f[%W_]')
-                    if col0 and line:match('^%s+' .. prop .. '%f[%W_]') then
+                    local col0 = line:find("%f[%w_]" .. prop .. "%f[%W_]")
+                    if col0 and line:match("^%s+" .. prop .. "%f[%W_]") then
                       d.range.start.line = lnum0 - 1
                       d.range.start.character = col0 - 1
-                      d.range['end'].line = lnum0 - 1
-                      d.range['end'].character = col0 - 1 + #prop
+                      d.range["end"].line = lnum0 - 1
+                      d.range["end"].character = col0 - 1 + #prop
                       break
                     end
                   end

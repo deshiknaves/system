@@ -1,4 +1,4 @@
-vim.cmd [[
+vim.cmd([[
   aunmenu PopUp
   anoremenu PopUp.Inspect              <cmd>Inspect<CR>
   amenu PopUp.-1-                      <NOP>
@@ -7,7 +7,7 @@ vim.cmd [[
   anoremenu PopUp.Back                 <C-t>
   amenu PopUp.-2-                      <NOP>
   amenu PopUp.URL                      gx
-]]
+]])
 
 --  https://terminal.shop
 
@@ -17,22 +17,22 @@ vim.api.nvim_create_autocmd("MenuPopup", {
   group = group,
   desc = "Custom PopUp Setup",
   callback = function()
-    vim.cmd [[
+    vim.cmd([[
       amenu disable PopUp.Go\ to\ definition
       amenu disable PopUp.References
       amenu disable PopUp.URL
-    ]]
+    ]])
 
     if vim.lsp.get_clients({ bufnr = 0 })[1] then
-      vim.cmd [[
+      vim.cmd([[
         amenu enable PopUp.Go\ to\ definition
         amenu enable PopUp.References
-      ]]
+      ]])
     end
 
     -- local urls = require("vim.ui")._get_urls()
     -- if vim.startswith(urls[1], "http") then
     --   vim.cmd [[amenu enable PopUp.URL]]
     -- end
-  end
+  end,
 })
