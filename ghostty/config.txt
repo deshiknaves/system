@@ -1,4 +1,7 @@
+keybind = global:cmd+shift+^=toggle_visibility
+font-family = Geist Mono Medium
 font-size = 11
-theme = catppuccin-mocha
 background-opacity = 0.95
 background-blur-radius = 20
+theme = tokyonight
+term=xterm-256color
