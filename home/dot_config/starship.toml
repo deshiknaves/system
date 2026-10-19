@@ -1,1 +1,16 @@
 "$schema" = 'https://starship.rs/config-schema.json'
+
+[nodejs]
+disabled = true
+
+[python]
+disabled = true
+
+[aws]
+disabled = true
+
+[package]
+disabled = true
+
+[docker_context]
+disabled = true
