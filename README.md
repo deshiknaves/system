@@ -62,6 +62,7 @@ Run `just --list` to see them all.
 | `bootstrap`  | First-run setup on a fresh machine                |
 | `apply`      | Apply dotfiles and run the package install        |
 | `mas`        | Install App Store apps (sign in to the App Store) |
+| `backup`     | Copy files that differ from the source to backup  |
 | `diff`       | Show pending dotfile changes                      |
 | `status`     | Show files that differ from the source            |
 | `add <path>` | Add a file to the chezmoi source                  |
@@ -89,7 +90,9 @@ failed `brew bundle` prints a warning. The script also:
 App Store apps install in a separate script. If you are not signed in to the App
 Store it warns and stops. Sign in, then run `just mas`.
 
-`just missing` shows installed packages that are not in the lists.
+`just missing` shows installed packages that are not in the lists. `just backup`
+copies every file that `chezmoi status` reports into
+`~/.dotfiles-backup/<timestamp>/` before you overwrite it.
 
 Homebrew refuses untrusted third-party taps, so prefer core formulae and casks.
 Fonts are casks (`font-*`).

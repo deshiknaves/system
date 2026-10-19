@@ -38,6 +38,25 @@ update:
 mas:
     chezmoi --source "{{ justfile_directory() }}" execute-template < home/run_onchange_after_mas-apps.sh.tmpl | bash
 
+# Copy files that differ from the source into ~/.dotfiles-backup/<timestamp>
+backup:
+    #! /bin/bash
+    set -e
+    dest="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
+    count=0
+    while IFS= read -r rel; do
+      if [ -e "$HOME/$rel" ]; then
+        mkdir -p "$dest/$(dirname "$rel")"
+        cp -RL "$HOME/$rel" "$dest/$rel"
+        count=$((count + 1))
+      fi
+    done < <(chezmoi status | cut -c4-)
+    if [ "$count" -eq 0 ]; then
+      echo "✅ Nothing to back up"
+    else
+      echo "✅ Backed up $count paths to $dest"
+    fi
+
 # List installed packages missing from the Brewfile
 missing:
     chezmoi execute-template '{{ "{{" }} template "Brewfile" . {{ "}}" }}' | brew bundle cleanup --file=- || [ $? -eq 1 ]
