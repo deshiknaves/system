@@ -20,7 +20,8 @@ just bootstrap
 
 The script installs Xcode CLI tools (macOS) or apt packages (Linux), Homebrew,
 `chezmoi` and `just`. It clones the repo to `~/Developer/system`, enables the
-git hooks, then runs `chezmoi init --apply`. It asks once for the machine type
+git hooks, then runs `chezmoi init --apply`. It asks for your password once and
+keeps `sudo` alive until it finishes. It asks once for the machine type
 (`personal` or `work`).
 
 ## How it works
@@ -98,6 +99,8 @@ zsh with [sheldon](https://sheldon.cli.rs) for plugins and
 ## Layout
 
 - `bootstrap.sh` - first-run script
+- `scripts/sudo-keepalive.sh` - keeps `sudo` alive for `just apply` and
+  `just update`
 - `justfile` - recipes
 - `.oxfmtrc.json` - oxfmt formatter config
 - `.githooks/` - pre-commit hook that runs `just lint`

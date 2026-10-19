@@ -12,6 +12,8 @@ package lists and the Neovim config.
 
 - `bootstrap.sh` - first-run script (Xcode CLI tools or apt, Homebrew, chezmoi,
   just, then `chezmoi init --apply`)
+- `scripts/sudo-keepalive.sh` - sourced by `just apply` and `just update` to
+  keep `sudo` alive (`bootstrap.sh` has its own copy)
 - `justfile` - recipes (`just --list`)
 - `.oxfmtrc.json` - oxfmt formatter config
 - `.githooks/pre-commit` - runs `just lint` (enable with `just hooks`)

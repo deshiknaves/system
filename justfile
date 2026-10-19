@@ -8,6 +8,10 @@ bootstrap:
 
 # Apply dotfiles and run package install
 apply:
+    #! /bin/bash
+    set -e
+    source "{{ justfile_directory() }}/scripts/sudo-keepalive.sh"
+    keep_sudo_alive
     chezmoi apply
 
 # Show pending dotfile changes
@@ -24,6 +28,10 @@ add path:
 
 # Pull repo changes and apply
 update:
+    #! /bin/bash
+    set -e
+    source "{{ justfile_directory() }}/scripts/sudo-keepalive.sh"
+    keep_sudo_alive
     chezmoi update
 
 # List installed packages missing from the Brewfile
@@ -36,7 +44,7 @@ hooks:
 
 # Shellcheck, stylua and oxfmt checks
 lint:
-    shellcheck bootstrap.sh .githooks/pre-commit
+    shellcheck bootstrap.sh scripts/sudo-keepalive.sh .githooks/pre-commit
     chezmoi --source "{{ justfile_directory() }}" execute-template < home/run_onchange_after_install-packages.sh.tmpl | shellcheck -
     chezmoi --source "{{ justfile_directory() }}" execute-template < home/run_onchange_after_macos-defaults.sh.tmpl | shellcheck -
     stylua --config-path home/dot_config/nvim/dot_stylua.toml --check home/dot_config/nvim

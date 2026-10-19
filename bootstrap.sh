@@ -4,6 +4,18 @@ set -e
 REPO_URL="https://github.com/deshiknaves/system.git"
 SOURCE_DIR="$HOME/Developer/system"
 
+# Standalone copy of scripts/sudo-keepalive.sh, since this runs before the clone.
+keep_sudo_alive() {
+  sudo -v
+  while true; do
+    sudo -n true
+    sleep 50
+    kill -0 "$$" 2>/dev/null || exit
+  done 2>/dev/null &
+  SUDO_KEEPALIVE_PID=$!
+  trap 'kill "$SUDO_KEEPALIVE_PID" 2>/dev/null' EXIT
+}
+
 install_xcode_cli_tools() {
   echo "🔍 Checking for Xcode CLI tools..."
   if xcode-select -p &>/dev/null; then
@@ -95,6 +107,8 @@ warn_login_shell() {
 }
 
 main() {
+  keep_sudo_alive
+
   local os
   os="$(uname -s)"
   if [ "$os" = "Darwin" ]; then
