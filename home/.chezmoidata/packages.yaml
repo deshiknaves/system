@@ -3,6 +3,8 @@ packages:
     brews:
       - awscli
       - bat
+      - caddy
+      - cargo-nextest
       - chezmoi
       - colima
       - docker
@@ -30,10 +32,12 @@ packages:
       - shellcheck
       - starship
       - stylua
+      - tailscale
       - tmux
       - tree-sitter-cli
       - uv
       - wget
+      - yazi
       - yq
       - zoxide
       - zsh
