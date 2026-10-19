@@ -3,6 +3,7 @@ set -e
 
 REPO_URL="https://github.com/deshiknaves/system.git"
 SOURCE_DIR="$HOME/Developer/system"
+CHEZMOI_ARGS=()
 
 # Standalone copy of scripts/sudo-keepalive.sh, since this runs before the clone.
 keep_sudo_alive() {
@@ -14,6 +15,36 @@ keep_sudo_alive() {
   done 2>/dev/null &
   SUDO_KEEPALIVE_PID=$!
   trap 'kill "$SUDO_KEEPALIVE_PID" 2>/dev/null' EXIT
+}
+
+# Turns --machine <personal|work> into a chezmoi prompt answer, passes the rest through.
+parse_args() {
+  local machine=""
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --machine)
+        machine="$2"
+        shift 2 || { echo "❌ --machine needs a value"; exit 1; }
+        ;;
+      --machine=*)
+        machine="${1#--machine=}"
+        shift
+        ;;
+      *)
+        CHEZMOI_ARGS+=("$1")
+        shift
+        ;;
+    esac
+  done
+
+  [ -n "$machine" ] || return 0
+  case "$machine" in
+    personal | work) CHEZMOI_ARGS+=(--promptChoice "Machine type=$machine") ;;
+    *)
+      echo "❌ --machine must be personal or work"
+      exit 1
+      ;;
+  esac
 }
 
 install_xcode_cli_tools() {
@@ -107,6 +138,7 @@ warn_login_shell() {
 }
 
 main() {
+  parse_args "$@"
   keep_sudo_alive
 
   local os
@@ -124,7 +156,7 @@ main() {
   install_git_hooks
 
   echo "⏳ Applying dotfiles"
-  chezmoi init --apply --source "$SOURCE_DIR" "$@"
+  chezmoi init --apply --source "$SOURCE_DIR" "${CHEZMOI_ARGS[@]}"
   echo "✅ Dotfiles applied"
 
   if [ "$os" != "Darwin" ]; then

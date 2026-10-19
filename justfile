@@ -3,8 +3,8 @@ default:
     @just --list
 
 # First-run setup on a fresh machine
-bootstrap:
-    ./bootstrap.sh
+bootstrap *args:
+    ./bootstrap.sh {{ args }}
 
 # Apply dotfiles and run package install
 apply:

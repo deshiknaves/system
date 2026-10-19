@@ -24,6 +24,15 @@ git hooks, then runs `chezmoi init --apply`. It asks for your password once and
 keeps `sudo` alive until it finishes. It asks once for the machine type
 (`personal` or `work`).
 
+Without a TTY, pass the machine type instead:
+
+```shell
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/deshiknaves/system/main/bootstrap.sh)" -- --machine personal
+```
+
+`--machine <personal|work>` answers the prompt. Other arguments pass through to
+`chezmoi init`.
+
 ## How it works
 
 - The chezmoi source is `home/` (set by `.chezmoiroot`).
