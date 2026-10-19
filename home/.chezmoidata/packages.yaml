@@ -15,7 +15,6 @@ packages:
       - lua-language-server
       - neovim
       - nvm
-      - oven-sh/bun/bun
       - pnpm
       - pyenv
       - ripgrep
