@@ -1,0 +1,32 @@
+shell = "zsh"
+
+[plugins.omz-cache]
+inline = '''
+export ZSH_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/ohmyzsh"
+mkdir -p "$ZSH_CACHE_DIR/completions"
+fpath=("$ZSH_CACHE_DIR/completions" $fpath)
+'''
+
+[plugins.zsh-completions]
+github = "zsh-users/zsh-completions"
+apply = ["fpath"]
+
+# Must run after completion fpath entries and before plugins that call compdef
+[plugins.compinit]
+inline = "autoload -Uz compinit && compinit"
+
+[plugins.omz-lib-git]
+github = "ohmyzsh/ohmyzsh"
+dir = "lib"
+use = ["git.zsh"]
+
+[plugins.omz]
+github = "ohmyzsh/ohmyzsh"
+dir = "plugins"
+use = ["{git,docker,docker-compose}/*.plugin.zsh"]
+
+[plugins.zsh-better-npm-completion]
+github = "lukechilds/zsh-better-npm-completion"
+
+[plugins.zsh-autosuggestions]
+github = "zsh-users/zsh-autosuggestions"

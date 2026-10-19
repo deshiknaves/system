@@ -29,7 +29,6 @@ packages:
       - z
       - zoxide
       - zsh
-      - zsh-completions
   darwin:
     brews:
       - mas
