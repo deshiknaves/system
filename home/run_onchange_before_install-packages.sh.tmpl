@@ -20,25 +20,7 @@ echo "✅ Homebrew found"
 
 echo "⏳ Installing packages"
 if brew bundle --file=- <<'BREWFILE'; then
-{{- $darwin := eq .chezmoi.os "darwin" }}
-{{- $groups := list "all" .chezmoi.os (get . "machine") }}
-{{- range $groups }}
-{{- range dig . "brews" (list) $.packages }}
-brew {{ . | quote }}
-{{- end }}
-{{- end }}
-{{- if $darwin }}
-{{- range $groups }}
-{{- range dig . "casks" (list) $.packages }}
-cask {{ . | quote }}
-{{- end }}
-{{- end }}
-{{- range $groups }}
-{{- range dig . "mas" (list) $.packages }}
-mas {{ .name | quote }}, id: {{ .id }}
-{{- end }}
-{{- end }}
-{{- end }}
+{{- template "Brewfile" . }}
 BREWFILE
   echo "✅ Packages installed"
 else
