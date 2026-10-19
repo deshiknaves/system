@@ -25,7 +25,6 @@ packages:
       - tmux
       - uv
       - wget
-      - z
       - zoxide
       - zsh
   darwin:
