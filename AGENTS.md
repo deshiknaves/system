@@ -13,6 +13,9 @@ package lists and the Neovim config.
 - `bootstrap.sh` - first-run script (Xcode CLI tools or apt, Homebrew, chezmoi,
   just, then `chezmoi init --apply`)
 - `justfile` - recipes (`just --list`)
+- `.oxfmtrc.json` - oxfmt formatter config
+- `.githooks/pre-commit` - runs `just lint` (enable with `just hooks`)
+- `.github/workflows/lint.yml` - CI, runs `just lint`
 - `.chezmoiroot` - sets the chezmoi source to `home/`
 - `home/` - chezmoi source
   - `.chezmoi.toml.tmpl` - chezmoi config (`sourceDir`, `mode = "symlink"`,
@@ -21,6 +24,10 @@ package lists and the Neovim config.
   - `.chezmoitemplates/Brewfile` - Brewfile built from the lists
   - `run_onchange_before_install-packages.sh.tmpl` - runs `brew bundle`
   - `.chezmoiignore` - files chezmoi skips (`.envvars`)
+  - `run_onchange_after_macos-defaults.sh.tmpl` - macOS `defaults write`
+    settings (renders to an empty script on Linux)
+  - `dot_gitconfig.tmpl` - `~/.gitconfig`. It includes `~/.gitconfig.local`,
+    which holds signing and work settings and is not in the repo.
   - `dot_config/nvim/` - Neovim config (lazy.nvim,
     `lua/config/{plugins,standalone,vscode,telescope}`, `lazy-lock.json`)
   - `dot_config/{ghostty,sheldon}/`, `dot_config/starship.toml`, `dot_zshrc`,
@@ -52,7 +59,8 @@ Read-only commands are fine: `just diff`, `just status`, `just missing`,
   overwritten on apply.
 - Packages: edit `home/.chezmoidata/packages.yaml`. Prefer core Homebrew
   formulae and casks, because Homebrew refuses untrusted third-party taps.
-- Run `just lint` after changes.
+- Run `just lint` after changes. `just hooks` makes git run it before each
+  commit.
 
 ## Neovim config
 
@@ -65,9 +73,11 @@ Read-only commands are fine: `just diff`, `just status`, `just missing`,
 
 - Lua: `home/dot_config/nvim/dot_stylua.toml` (2 spaces).
   `home/dot_config/nvim/dot_editorconfig` also sets 2-space indent for `*.lua`.
-- Markdown, JS, JSON: `.prettierrc.js` (80 cols, `proseWrap: always`, no
-  semicolons, single quotes).
-- `just lint` runs shellcheck, stylua and prettier.
+- Markdown, JSON, YAML, TOML: `.oxfmtrc.json` (oxfmt, 80 cols,
+  `proseWrap: always`, no semicolons, single quotes). `lazy-lock.json` is
+  ignored.
+- `just lint` runs shellcheck, stylua and `oxfmt --check`. Run `oxfmt` to fix
+  formatting.
 
 ## Shell script conventions
 

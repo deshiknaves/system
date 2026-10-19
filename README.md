@@ -19,9 +19,9 @@ just bootstrap
 ```
 
 The script installs Xcode CLI tools (macOS) or apt packages (Linux), Homebrew,
-`chezmoi` and `just`. It clones the repo to `~/Developer/system`, then runs
-`chezmoi init --apply`. It asks once for the machine type (`personal` or
-`work`).
+`chezmoi` and `just`. It clones the repo to `~/Developer/system`, enables the
+git hooks, then runs `chezmoi init --apply`. It asks once for the machine type
+(`personal` or `work`).
 
 ## How it works
 
@@ -56,7 +56,8 @@ Run `just --list` to see them all.
 | `add <path>` | Add a file to the chezmoi source                  |
 | `update`     | Pull repo changes and apply                       |
 | `missing`    | List installed packages that are not in the lists |
-| `lint`       | Run shellcheck, stylua and prettier checks        |
+| `hooks`      | Make git run `just lint` before each commit       |
+| `lint`       | Run shellcheck, stylua and oxfmt checks           |
 
 ## Packages
 
@@ -77,6 +78,8 @@ Fonts are casks (`font-*`).
 ## Per-machine settings
 
 - Templates can use `.machine` (`personal` or `work`) and `.chezmoi.os`.
+- `~/.gitconfig.local` holds signing and work git settings. It is not in the
+  repo.
 - `~/.envvars` is for this machine only. It is never synced (it is in
   `home/.chezmoiignore`). `~/.zshrc` sources it if it exists.
 
@@ -87,11 +90,16 @@ zsh with [sheldon](https://sheldon.cli.rs) for plugins and
 
 - Plugins: `home/dot_config/sheldon/plugins.toml`
 - Prompt: `home/dot_config/starship.toml`
+- Node versions: [fnm](https://github.com/Schniz/fnm) switches on `cd` using
+  `.nvmrc` or `.node-version`.
 
 ## Layout
 
 - `bootstrap.sh` - first-run script
 - `justfile` - recipes
+- `.oxfmtrc.json` - oxfmt formatter config
+- `.githooks/` - pre-commit hook that runs `just lint`
+- `.github/workflows/` - CI lint
 - `home/` - chezmoi source
   - `.chezmoi.toml.tmpl` - chezmoi config and the machine prompt
   - `.chezmoidata/packages.yaml` - package lists
@@ -101,6 +109,8 @@ zsh with [sheldon](https://sheldon.cli.rs) for plugins and
   - `dot_config/{ghostty,sheldon}/`, `dot_config/starship.toml` - terminal and
     shell config
   - `dot_zshrc`, `dot_aliases`, `dot_tmux.conf` - shell and tmux config
+  - `dot_gitconfig.tmpl` - git config (includes `~/.gitconfig.local`)
+  - `run_onchange_after_macos-defaults.sh.tmpl` - macOS defaults
   - `dot_codex/AGENTS.md` - global Codex instructions
 
 Claude config and skills are not in this repo.
