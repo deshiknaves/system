@@ -4,50 +4,75 @@ Guidance for AI coding agents working in this repo.
 
 ## What this is
 
-Personal macOS setup repo. Shell scripts install tools and apps. Config folders
-hold dotfiles and the Neovim config.
+Personal machine setup repo, managed with chezmoi. It supports macOS and
+Ubuntu/Debian. `bootstrap.sh` installs the tools. `home/` holds the dotfiles,
+package lists and the Neovim config.
 
 ## Layout
 
-- `makefile` - target `brew` runs the setup scripts in order
-- `*.sh` in root - install and sync scripts
-- `nvim/` - Neovim config (lazy.nvim,
-  `lua/config/{plugins,standalone,vscode,telescope}`, `lazy-lock.json`)
-- `zsh/`, `tmux/`, `ghostty/` - shell, tmux and terminal config
-- `claude/CLAUDE.md`, `codex/AGENTS.md` - the user's global agent configs. They
-  are not instructions for this repo. Edit them only when asked.
-- `.warp/themes/` - Warp themes
+- `bootstrap.sh` - first-run script (Xcode CLI tools or apt, Homebrew, chezmoi,
+  just, then `chezmoi init --apply`)
+- `justfile` - recipes (`just --list`)
+- `.chezmoiroot` - sets the chezmoi source to `home/`
+- `home/` - chezmoi source
+  - `.chezmoi.toml.tmpl` - chezmoi config (`sourceDir`, `mode = "symlink"`,
+    `machine` prompt)
+  - `.chezmoidata/packages.yaml` - package lists
+  - `.chezmoitemplates/Brewfile` - Brewfile built from the lists
+  - `run_onchange_before_install-packages.sh.tmpl` - runs `brew bundle`
+  - `.chezmoiignore` - files chezmoi skips (`.envvars`)
+  - `dot_config/nvim/` - Neovim config (lazy.nvim,
+    `lua/config/{plugins,standalone,vscode,telescope}`, `lazy-lock.json`)
+  - `dot_config/{ghostty,sheldon}/`, `dot_config/starship.toml`, `dot_zshrc`,
+    `dot_aliases`, `dot_tmux.conf` - terminal, shell and tmux config
+  - `dot_codex/AGENTS.md` - the user's global Codex config. It is not
+    instructions for this repo. Edit it only when asked.
+- Claude config is not in this repo.
 
 ## Running setup
 
-`make` runs, in order: `xcode_cli_tools.sh`, `brew_install.sh`,
-`applications.sh`, `spaceship_install.sh`, `mas_install.sh`, `dot_files.sh`,
-`sync_nvim_config.sh`.
+Never run these without asking. They change the system (brew, apps, home
+directory files):
 
-Never run `make` or any install script without asking. They change the system
-(brew, apps, home directory files, `~/.config/nvim`).
+- `bootstrap.sh`
+- `chezmoi apply`, `chezmoi init`, `chezmoi update`
+- `just apply`, `just update`, `just bootstrap`
+
+Read-only commands are fine: `just diff`, `just status`, `just missing`,
+`just lint`.
+
+## Editing
+
+- Edit sources under `home/`, never the targets in `~`.
+- Use chezmoi names: `dot_` for a leading `.`, `.tmpl` for templates, `empty_`
+  to keep empty files, `run_onchange_` for scripts that run when they change.
+- Files without `.tmpl` are symlinked into the repo, so the target and source
+  are the same file.
+- For `.tmpl` files, edit the source. The target is rendered output and is
+  overwritten on apply.
+- Packages: edit `home/.chezmoidata/packages.yaml`. Prefer core Homebrew
+  formulae and casks, because Homebrew refuses untrusted third-party taps.
+- Run `just lint` after changes.
 
 ## Neovim config
 
-- Edit the config in the repo's `nvim/`.
-- `~/.config/nvim` is the live copy. `sync_nvim_config.sh` syncs it, from the
-  repo root:
-  - `--push`: `~/.config/nvim` to repo, no prompt
-  - `--pull`: repo to `~/.config/nvim`, prompts, uses `rsync --delete` so extra
-    files there are removed
-- Check the direction before syncing. Do not run it without asking.
+- The config lives at `home/dot_config/nvim`.
+- Files in `~/.config/nvim` are symlinks to it, so there is nothing to sync.
+- `dot_stylua.toml` and `dot_editorconfig` become `.stylua.toml` and
+  `.editorconfig` in the target.
 
 ## Formatting
 
-- Lua: `nvim/.stylua.toml` (2 spaces). `nvim/.editorconfig` also sets 2-space
-  indent for `*.lua`.
+- Lua: `home/dot_config/nvim/dot_stylua.toml` (2 spaces).
+  `home/dot_config/nvim/dot_editorconfig` also sets 2-space indent for `*.lua`.
 - Markdown, JS, JSON: `.prettierrc.js` (80 cols, `proseWrap: always`, no
   semicolons, single quotes).
+- `just lint` runs shellcheck, stylua and prettier.
 
 ## Shell script conventions
 
 - `#! /bin/bash` and `set -e` at the top
-- Helper functions per task (`brew_install`, `mas_install`, `copy_file`)
+- Helper functions per task (`brew_install`, `install_homebrew`, `clone_repo`)
 - Check first, then install; skip when already present
 - Status echos with emoji: `🔍` checking, `⏳` working, `✅` done, `❌` failed,
   `⚠` warning, `❓` prompt

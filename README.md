@@ -1,72 +1,106 @@
 # System
 
-This is a collection of install scripts that I use to set up a new system. The
-goal is to run a single command and have a system ready to go. Of course, there
-are some things that can't be automated, but this should get you 90% of the way
-there.
+Personal machine setup, managed with [chezmoi](https://www.chezmoi.io). One
+command sets up a new machine: Homebrew, packages, dotfiles and the Neovim
+config. Supports macOS and Ubuntu/Debian.
 
-## Usage
+## First run
 
-```shell
-make
-```
-
-## Order of operations
-
-1. Install Xcode CLI tools (`xcode_cli_tools.sh`)
-2. Install brew (`brew_install.sh`)
-3. Install applications through brew (`applications.sh`)
-4. Install oh-my-zsh and Spaceship (`spaceship_install.sh`)
-5. Install applications through the Mac App Store (`mas_install.sh`)
-6. Copy dotfiles into the home directory (`dot_files.sh`)
-7. Sync the Neovim config (`sync_nvim_config.sh`)
-
-## Repo layout
-
-- `nvim/` - Neovim config (lazy.nvim, plugins under `lua/config/`)
-- `zsh/` - zsh config and aliases
-- `tmux/` - tmux config
-- `ghostty/` - Ghostty terminal config
-- `claude/` - global instructions for Claude Code
-- `codex/` - global instructions for Codex
-- `.warp/themes/` - Warp terminal themes
-
-## Neovim sync
-
-`~/.config/nvim` is the live copy. Run from the repo root:
+On a fresh machine:
 
 ```shell
-./sync_nvim_config.sh --push # ~/.config/nvim -> repo, no prompt
-./sync_nvim_config.sh --pull # repo -> ~/.config/nvim, asks first
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/deshiknaves/system/main/bootstrap.sh)"
 ```
 
-`--pull` uses `rsync --delete`, so files in `~/.config/nvim` that are not in the
-repo are removed.
+From a clone of this repo:
 
-## If you're customizing this
+```shell
+just bootstrap
+```
 
-If you're customizing this for your own use, you'll want to change the
-applications and files that are listed in the scripts:
+The script installs Xcode CLI tools (macOS) or apt packages (Linux), Homebrew,
+`chezmoi` and `just`. It clones the repo to `~/Developer/system`, then runs
+`chezmoi init --apply`. It asks once for the machine type (`personal` or
+`work`).
 
-- `applications.sh` - This is the list of applications that are installed
-  through brew
-- `mas_install.sh` - This is the list of applications that are installed through
-  the Mac App Store
-- `spaceship_install.sh` - This installs oh-my-zsh and Spaceship
-- `dot_files.sh` - This is the list of dotfiles that are copied into the home
-  directory
+## How it works
 
-To remove one of the scripts, remove the line from the `makefile` that
-orchestrates the install.
+- The chezmoi source is `home/` (set by `.chezmoiroot`).
+- The repo lives at `~/Developer/system` (`sourceDir` in
+  `home/.chezmoi.toml.tmpl`).
+- chezmoi uses `mode = "symlink"`. Files that are not templates become symlinks
+  into the repo, so edits on the machine land in the repo directly.
+- Files named `dot_x` become `~/.x`. Files ending in `.tmpl` are templates and
+  are rendered, not linked.
 
-## Known issues
+## Daily workflow
 
-- `makefile` calls `sync_nvim_config.sh from`, but the script only accepts
-  `--push` or `--pull`, so the last step of `make` fails.
-- `dot_files.sh` copies `./aerospace/aerospace.toml`, but there is no
-  `aerospace/` directory. With `set -e` the script aborts at that line.
-- Nothing installs the `ghostty/`, `claude/` or `codex/` configs.
+- Normal file: edit it (it is a symlink), then `git commit`.
+- Template (`*.tmpl`): run `chezmoi edit --apply <target>`.
+- New file: run `just add <path>`.
+- Sync a machine from the repo: run `just update`. It runs `git pull` and
+  applies. Symlinked files change on pull alone. Templates, new files and
+  packages need the apply.
+- Preview changes: run `just diff`.
 
-## TODO
+## Recipes
 
-- [ ] Add a script to install all the fonts
+Run `just --list` to see them all.
+
+| Recipe       | What it does                                      |
+| ------------ | ------------------------------------------------- |
+| `bootstrap`  | First-run setup on a fresh machine                |
+| `apply`      | Apply dotfiles and run the package install        |
+| `diff`       | Show pending dotfile changes                      |
+| `status`     | Show files that differ from the source            |
+| `add <path>` | Add a file to the chezmoi source                  |
+| `update`     | Pull repo changes and apply                       |
+| `missing`    | List installed packages that are not in the lists |
+| `lint`       | Run shellcheck, stylua and prettier checks        |
+
+## Packages
+
+Edit `home/.chezmoidata/packages.yaml`. Each group has `brews`, `casks` and
+`mas`:
+
+- `all`: every machine
+- `darwin`, `linux`: by OS
+- `personal`, `work`: by machine type (optional sections)
+
+Casks and `mas` apps install on macOS only. `just apply` runs `brew bundle` when
+the list changes. `just missing` shows installed packages that are not in the
+lists.
+
+Homebrew refuses untrusted third-party taps, so prefer core formulae and casks.
+Fonts are casks (`font-*`).
+
+## Per-machine settings
+
+- Templates can use `.machine` (`personal` or `work`) and `.chezmoi.os`.
+- `~/.envvars` is for this machine only. It is never synced (it is in
+  `home/.chezmoiignore`). `~/.zshrc` sources it if it exists.
+
+## Shell
+
+zsh with [sheldon](https://sheldon.cli.rs) for plugins and
+[starship](https://starship.rs) for the prompt.
+
+- Plugins: `home/dot_config/sheldon/plugins.toml`
+- Prompt: `home/dot_config/starship.toml`
+
+## Layout
+
+- `bootstrap.sh` - first-run script
+- `justfile` - recipes
+- `home/` - chezmoi source
+  - `.chezmoi.toml.tmpl` - chezmoi config and the machine prompt
+  - `.chezmoidata/packages.yaml` - package lists
+  - `.chezmoitemplates/Brewfile` - Brewfile built from the lists
+  - `run_onchange_before_install-packages.sh.tmpl` - installs packages
+  - `dot_config/nvim/` - Neovim config (lazy.nvim)
+  - `dot_config/{ghostty,sheldon}/`, `dot_config/starship.toml` - terminal and
+    shell config
+  - `dot_zshrc`, `dot_aliases`, `dot_tmux.conf` - shell and tmux config
+  - `dot_codex/AGENTS.md` - global Codex instructions
+
+Claude config and skills are not in this repo.
