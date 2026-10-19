@@ -37,7 +37,7 @@ hooks:
 # Shellcheck, stylua and oxfmt checks
 lint:
     shellcheck bootstrap.sh .githooks/pre-commit
-    chezmoi --source "{{ justfile_directory() }}" execute-template < home/run_onchange_before_install-packages.sh.tmpl | shellcheck -
+    chezmoi --source "{{ justfile_directory() }}" execute-template < home/run_onchange_after_install-packages.sh.tmpl | shellcheck -
     chezmoi --source "{{ justfile_directory() }}" execute-template < home/run_onchange_after_macos-defaults.sh.tmpl | shellcheck -
     stylua --config-path home/dot_config/nvim/dot_stylua.toml --check home/dot_config/nvim
     oxfmt --check

@@ -22,7 +22,8 @@ package lists and the Neovim config.
     `machine` prompt)
   - `.chezmoidata/packages.yaml` - package lists
   - `.chezmoitemplates/Brewfile` - Brewfile built from the lists
-  - `run_onchange_before_install-packages.sh.tmpl` - runs `brew bundle`
+  - `run_onchange_after_install-packages.sh.tmpl` - runs `brew bundle` (warns on
+    failure)
   - `.chezmoiignore` - files chezmoi skips (`.envvars`)
   - `run_onchange_after_macos-defaults.sh.tmpl` - macOS `defaults write`
     settings (renders to an empty script on Linux)

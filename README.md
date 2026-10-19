@@ -68,9 +68,11 @@ Edit `home/.chezmoidata/packages.yaml`. Each group has `brews`, `casks` and
 - `darwin`, `linux`: by OS
 - `personal`, `work`: by machine type (optional sections)
 
-Casks and `mas` apps install on macOS only. `just apply` runs `brew bundle` when
-the list changes. `just missing` shows installed packages that are not in the
-lists.
+Casks and `mas` apps install on macOS only. `just apply` runs the package script
+when the list changes. It runs after the dotfiles and never aborts the apply: a
+failed `brew bundle` prints a warning.
+
+`just missing` shows installed packages that are not in the lists.
 
 Homebrew refuses untrusted third-party taps, so prefer core formulae and casks.
 Fonts are casks (`font-*`).
@@ -104,7 +106,7 @@ zsh with [sheldon](https://sheldon.cli.rs) for plugins and
   - `.chezmoi.toml.tmpl` - chezmoi config and the machine prompt
   - `.chezmoidata/packages.yaml` - package lists
   - `.chezmoitemplates/Brewfile` - Brewfile built from the lists
-  - `run_onchange_before_install-packages.sh.tmpl` - installs packages
+  - `run_onchange_after_install-packages.sh.tmpl` - installs packages
   - `dot_config/nvim/` - Neovim config (lazy.nvim)
   - `dot_config/{ghostty,sheldon}/`, `dot_config/starship.toml` - terminal and
     shell config
