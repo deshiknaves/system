@@ -32,7 +32,6 @@ packages:
       - shellcheck
       - starship
       - stylua
-      - tailscale
       - tmux
       - tree-sitter-cli
       - uv
@@ -51,7 +50,6 @@ packages:
       - codex
       - contexts
       - cursor
-      - discord
       - font-geist-mono
       - font-hack-nerd-font
       - ghostty
@@ -70,10 +68,16 @@ packages:
       - { name: Unclutter, id: 577085396 }
       - { name: Xcode, id: 497799835 }
       - { name: Bumpr, id: 1166066070 }
-      - { name: Things, id: 904280696 }
       - { name: Vimari, id: 1480933944 }
+  linux:
+    brews: []
+  personal:
+    brews:
+      - tailscale
+    casks:
+      - discord
+    mas:
+      - { name: Things, id: 904280696 }
       - { name: NordVPN, id: 905953485 }
       - { name: Pixelmator Pro, id: 6746662575 }
       - { name: WhatsApp Messenger, id: 310633997 }
-  linux:
-    brews: []
