@@ -111,6 +111,5 @@ zsh with [sheldon](https://sheldon.cli.rs) for plugins and
   - `dot_zshrc`, `dot_aliases`, `dot_tmux.conf` - shell and tmux config
   - `dot_gitconfig.tmpl` - git config (includes `~/.gitconfig.local`)
   - `run_onchange_after_macos-defaults.sh.tmpl` - macOS defaults
-  - `dot_codex/AGENTS.md` - global Codex instructions
 
-Claude config and skills are not in this repo.
+Claude and Codex config and skills are not in this repo.

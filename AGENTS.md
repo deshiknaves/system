@@ -32,9 +32,7 @@ package lists and the Neovim config.
     `lua/config/{plugins,standalone,vscode,telescope}`, `lazy-lock.json`)
   - `dot_config/{ghostty,sheldon}/`, `dot_config/starship.toml`, `dot_zshrc`,
     `dot_aliases`, `dot_tmux.conf` - terminal, shell and tmux config
-  - `dot_codex/AGENTS.md` - the user's global Codex config. It is not
-    instructions for this repo. Edit it only when asked.
-- Claude config is not in this repo.
+- Claude and Codex config are not in this repo.
 
 ## Running setup
 
