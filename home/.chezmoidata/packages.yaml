@@ -55,14 +55,11 @@ packages:
       - { name: 1Password for Safari, id: 1569813296 }
       - { name: Unclutter, id: 577085396 }
       - { name: Xcode, id: 497799835 }
-      - { name: Keynote, id: 409183694 }
       - { name: Bumpr, id: 1166066070 }
       - { name: PayPal Honey, id: 1472777122 }
       - { name: Things, id: 904280696 }
       - { name: Vimari, id: 1480933944 }
-      - { name: Pages, id: 409201541 }
       - { name: NordVPN, id: 905953485 }
-      - { name: Numbers, id: 409203825 }
       - { name: Pixelmator Pro, id: 1289583905 }
       - { name: WhatsApp Desktop, id: 1147396723 }
   linux:
