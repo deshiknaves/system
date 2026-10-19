@@ -19,3 +19,5 @@ eval "$(zoxide init --cmd cd zsh)"
 [[ -f ~/.vite-plus/env ]] && source ~/.vite-plus/env
 
 eval "$(starship init zsh)"
+
+[[ -f ~/.local_extensions ]] && source ~/.local_extensions
