@@ -12,7 +12,16 @@ defaults write NSGlobalDomain AppleInterfaceStyle -string Dark
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 2
 defaults write NSGlobalDomain KeyRepeat -int 2
 defaults write NSGlobalDomain InitialKeyRepeat -int 15
-defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool true
+for key_repeat_app in \
+  com.mitchellh.ghostty \
+  com.cmuxterm.app \
+  com.todesktop.230313mzl4w4u92 \
+  com.apple.dt.Xcode \
+  com.microsoft.VSCode \
+  dev.zed.Zed; do
+  defaults write "$key_repeat_app" ApplePressAndHoldEnabled -bool false
+done
 defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
