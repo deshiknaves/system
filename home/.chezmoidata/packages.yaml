@@ -16,7 +16,6 @@ packages:
       - neovim
       - nvm
       - pnpm
-      - pyenv
       - ripgrep
       - rust-script
       - sheldon
@@ -24,6 +23,7 @@ packages:
       - starship
       - stylua
       - tmux
+      - uv
       - wget
       - z
       - zoxide

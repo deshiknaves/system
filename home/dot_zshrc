@@ -9,21 +9,8 @@ eval "$(sheldon source)"
 
 export PATH="$HOME/.cargo/bin:$HOME/.local/bin:$PATH"
 
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-if command -v pyenv &>/dev/null; then
-  export PIPENV_PYTHON="$PYENV_ROOT/shims/python"
-  eval "$(pyenv init -)"
-  command -v pyenv-virtualenv-init &>/dev/null && eval "$(pyenv virtualenv-init -)"
-fi
-
 [[ -d $HOMEBREW_PREFIX/opt/openjdk/bin ]] && export PATH="$HOMEBREW_PREFIX/opt/openjdk/bin:$PATH"
 [[ -d $HOMEBREW_PREFIX/opt/postgresql@17/bin ]] && export PATH="$HOMEBREW_PREFIX/opt/postgresql@17/bin:$PATH"
-if [[ -d $HOMEBREW_PREFIX/opt/sqlite ]]; then
-  export LDFLAGS="-L$HOMEBREW_PREFIX/opt/sqlite/lib"
-  export CPPFLAGS="-I$HOMEBREW_PREFIX/opt/sqlite/include"
-  export PKG_CONFIG_PATH="$HOMEBREW_PREFIX/opt/sqlite/lib/pkgconfig"
-fi
 
 export NVM_DIR="$HOME/.nvm"
 if [[ -s $HOMEBREW_PREFIX/opt/nvm/nvm.sh ]]; then
