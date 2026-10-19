@@ -4,18 +4,26 @@ packages:
       - awscli
       - bat
       - chezmoi
+      - colima
       - docker
       - eza
       - fd
+      - ffmpeg
+      - fnm
       - fzf
       - gh
       - htop
+      - hunk
       - hurl
+      - imagemagick
+      - jq
       - just
+      - kubernetes-cli
       - lua-language-server
       - neovim
-      - nvm
+      - oxfmt
       - pnpm
+      - postgresql@17
       - ripgrep
       - rust-script
       - sheldon
@@ -23,8 +31,10 @@ packages:
       - starship
       - stylua
       - tmux
+      - tree-sitter-cli
       - uv
       - wget
+      - yq
       - zoxide
       - zsh
   darwin:
@@ -59,7 +69,7 @@ packages:
       - { name: Things, id: 904280696 }
       - { name: Vimari, id: 1480933944 }
       - { name: NordVPN, id: 905953485 }
-      - { name: Pixelmator Pro, id: 1289583905 }
+      - { name: Pixelmator Pro, id: 6746662575 }
       - { name: WhatsApp Messenger, id: 310633997 }
   linux:
     brews: []
