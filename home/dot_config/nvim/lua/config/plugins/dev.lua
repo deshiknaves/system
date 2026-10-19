@@ -1,6 +1,6 @@
 return {
   {
-    dir = "~/.config/nvim/plugins/present.nvim",
+    dir = vim.fn.stdpath("config") .. "/plugins/present.nvim",
     config = function()
       require("present")
     end,
