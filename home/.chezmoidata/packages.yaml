@@ -1,0 +1,72 @@
+packages:
+  all:
+    brews:
+      - awscli
+      - bat
+      - chezmoi
+      - docker
+      - eza
+      - fd
+      - fzf
+      - gh
+      - htop
+      - hurl
+      - just
+      - lua-language-server
+      - neovim
+      - nvm
+      - oven-sh/bun/bun
+      - pnpm
+      - pyenv
+      - ripgrep
+      - rust-script
+      - sheldon
+      - shellcheck
+      - starship
+      - stylua
+      - tmux
+      - wget
+      - z
+      - zoxide
+      - zsh
+      - zsh-completions
+  darwin:
+    brews:
+      - mas
+      - trash
+    casks:
+      - 1password
+      - 1password-cli
+      - codex
+      - contexts
+      - cursor
+      - discord
+      - font-geist-mono
+      - font-hack-nerd-font
+      - ghostty
+      - helium-browser
+      - homerow
+      - kaleidoscope
+      - karabiner-elements
+      - microsoft-edge
+      - obsidian
+      - raycast
+      - stats
+      - tower
+    mas:
+      - { name: AdBlock, id: 1402042596 }
+      - { name: 1Password for Safari, id: 1569813296 }
+      - { name: Unclutter, id: 577085396 }
+      - { name: Xcode, id: 497799835 }
+      - { name: Keynote, id: 409183694 }
+      - { name: Bumpr, id: 1166066070 }
+      - { name: PayPal Honey, id: 1472777122 }
+      - { name: Things, id: 904280696 }
+      - { name: Vimari, id: 1480933944 }
+      - { name: Pages, id: 409201541 }
+      - { name: NordVPN, id: 905953485 }
+      - { name: Numbers, id: 409203825 }
+      - { name: Pixelmator Pro, id: 1289583905 }
+      - { name: WhatsApp Desktop, id: 1147396723 }
+  linux:
+    brews: []
