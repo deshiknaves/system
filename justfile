@@ -28,11 +28,16 @@ update:
 
 # List installed packages missing from the Brewfile
 missing:
-    chezmoi execute-template '{{ "{{" }} template "Brewfile" . {{ "}}" }}' | brew bundle cleanup --file=-
+    chezmoi execute-template '{{ "{{" }} template "Brewfile" . {{ "}}" }}' | brew bundle cleanup --file=- || [ $? -eq 1 ]
 
-# Shellcheck, stylua and prettier checks
+# Point git at the repo hooks in .githooks
+hooks:
+    git config core.hooksPath .githooks
+
+# Shellcheck, stylua and oxfmt checks
 lint:
-    shellcheck bootstrap.sh
-    chezmoi execute-template < home/run_onchange_before_install-packages.sh.tmpl | shellcheck -
+    shellcheck bootstrap.sh .githooks/pre-commit
+    chezmoi --source "{{ justfile_directory() }}" execute-template < home/run_onchange_before_install-packages.sh.tmpl | shellcheck -
+    chezmoi --source "{{ justfile_directory() }}" execute-template < home/run_onchange_after_macos-defaults.sh.tmpl | shellcheck -
     stylua --config-path home/dot_config/nvim/dot_stylua.toml --check home/dot_config/nvim
-    npx --yes prettier --check '**/*.md'
+    oxfmt --check

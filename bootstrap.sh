@@ -75,6 +75,17 @@ clone_repo() {
   echo "✅ Repo cloned"
 }
 
+install_git_hooks() {
+  echo "🔍 Checking git hooks..."
+  if [ "$(git -C "$SOURCE_DIR" config --get core.hooksPath)" = ".githooks" ]; then
+    echo "✅ Git hooks configured"
+    return
+  fi
+  echo "⏳ Configuring git hooks"
+  git -C "$SOURCE_DIR" config core.hooksPath .githooks
+  echo "✅ Git hooks configured"
+}
+
 warn_login_shell() {
   local login_shell
   login_shell="$(getent passwd "$(id -un)" | cut -d: -f7)"
@@ -96,6 +107,7 @@ main() {
   brew_install chezmoi
   brew_install just
   clone_repo
+  install_git_hooks
 
   echo "⏳ Applying dotfiles"
   chezmoi init --apply --source "$SOURCE_DIR" "$@"

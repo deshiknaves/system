@@ -1,0 +1,17 @@
+name: Lint
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install tools
+        run: |
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          brew install just chezmoi shellcheck stylua oxfmt
+          echo "$HOMEBREW_PREFIX/bin" >> "$GITHUB_PATH"
+      - run: just lint

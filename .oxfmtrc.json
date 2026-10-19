@@ -1,0 +1,17 @@
+{
+  "arrowParens": "avoid",
+  "embeddedLanguageFormatting": "auto",
+  "endOfLine": "lf",
+  "htmlWhitespaceSensitivity": "css",
+  "jsxSingleQuote": false,
+  "printWidth": 80,
+  "proseWrap": "always",
+  "quoteProps": "as-needed",
+  "semi": false,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "trailingComma": "all",
+  "useTabs": false,
+  "sortPackageJson": false,
+  "ignorePatterns": ["home/dot_config/nvim/lazy-lock.json"]
+}
