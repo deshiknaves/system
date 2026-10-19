@@ -75,10 +75,22 @@ BREWFILE
   fi
 }
 
+install_node() {
+  command -v fnm &>/dev/null || return 0
+  echo "🔍 Checking for Node versions..."
+  if fnm list | grep -q '^\* v'; then
+    echo "✅ Node found"
+    return
+  fi
+  echo "⏳ Installing Node LTS"
+  fnm install --lts || echo "⚠ Node install failed"
+}
+
 main() {
   check_homebrew
   adopt_casks
   install_packages
+  install_node
 }
 
 main

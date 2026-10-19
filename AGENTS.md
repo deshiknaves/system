@@ -28,7 +28,7 @@ package lists and the Neovim config.
   - `.chezmoitemplates/casks` - cask list as JSON, used by the Brewfile and the
     install script
   - `run_onchange_after_install-packages.sh.tmpl` - adopts hand-installed casks,
-    runs `brew bundle` (warns on failure)
+    runs `brew bundle` (warns on failure), installs Node LTS with fnm
   - `run_onchange_after_mas-apps.sh.tmpl` - installs App Store apps (`just mas`)
   - `create_dot_gitconfig.local`, `create_dot_local_extensions` - stubs created
     only if missing

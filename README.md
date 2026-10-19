@@ -86,6 +86,7 @@ failed `brew bundle` prints a warning. The script also:
 
 - adopts casks you installed by hand (`brew install --cask --adopt`) when their
   `.app` is in `/Applications`
+- installs the Node LTS with `fnm` when no version is installed
 
 App Store apps install in a separate script. If you are not signed in to the App
 Store it warns and stops. Sign in, then run `just mas`.
@@ -132,7 +133,7 @@ zsh with [sheldon](https://sheldon.cli.rs) for plugins and
   - `.chezmoitemplates/casks` - cask list as JSON, shared by the Brewfile and
     the install script
   - `run_onchange_after_install-packages.sh.tmpl` - installs packages, adopts
-    casks
+    casks, installs Node
   - `run_onchange_after_mas-apps.sh.tmpl` - installs App Store apps
   - `dot_config/nvim/` - Neovim config (lazy.nvim)
   - `dot_config/{ghostty,sheldon}/`, `dot_config/starship.toml` - terminal and
