@@ -29,6 +29,8 @@ package lists and the Neovim config.
     install script
   - `run_onchange_after_install-packages.sh.tmpl` - adopts hand-installed casks,
     runs `brew bundle` (warns on failure)
+  - `create_dot_gitconfig.local`, `create_dot_local_extensions` - stubs created
+    only if missing
   - `.chezmoiignore` - files chezmoi skips (`.envvars`)
   - `run_onchange_after_macos-defaults.sh.tmpl` - macOS `defaults write`
     settings (renders to an empty script on Linux)

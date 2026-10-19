@@ -84,8 +84,9 @@ Fonts are casks (`font-*`).
 ## Per-machine settings
 
 - Templates can use `.machine` (`personal` or `work`) and `.chezmoi.os`.
-- `~/.gitconfig.local` holds signing and work git settings. It is not in the
-  repo.
+- `~/.gitconfig.local` holds signing and work git settings.
+  `~/.local_extensions` holds machine-local shell config. Neither is in the
+  repo. chezmoi creates a stub for each only if it is missing.
 - `~/.envvars` is for this machine only. It is never synced (it is in
   `home/.chezmoiignore`). `~/.zshrc` sources it if it exists.
 
@@ -121,6 +122,8 @@ zsh with [sheldon](https://sheldon.cli.rs) for plugins and
     shell config
   - `dot_zshrc`, `dot_aliases`, `dot_tmux.conf` - shell and tmux config
   - `dot_gitconfig.tmpl` - git config (includes `~/.gitconfig.local`)
+  - `create_dot_gitconfig.local`, `create_dot_local_extensions` - stubs created
+    only if missing
   - `run_onchange_after_macos-defaults.sh.tmpl` - macOS defaults
 
 Claude and Codex config and skills are not in this repo.
