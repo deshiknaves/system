@@ -34,6 +34,10 @@ update:
     keep_sudo_alive
     chezmoi update
 
+# Install App Store apps (sign in to the App Store first)
+mas:
+    chezmoi --source "{{ justfile_directory() }}" execute-template < home/run_onchange_after_mas-apps.sh.tmpl | bash
+
 # List installed packages missing from the Brewfile
 missing:
     chezmoi execute-template '{{ "{{" }} template "Brewfile" . {{ "}}" }}' | brew bundle cleanup --file=- || [ $? -eq 1 ]
@@ -46,6 +50,7 @@ hooks:
 lint:
     shellcheck bootstrap.sh scripts/sudo-keepalive.sh .githooks/pre-commit
     chezmoi --source "{{ justfile_directory() }}" execute-template < home/run_onchange_after_install-packages.sh.tmpl | shellcheck -
+    chezmoi --source "{{ justfile_directory() }}" execute-template < home/run_onchange_after_mas-apps.sh.tmpl | shellcheck -
     chezmoi --source "{{ justfile_directory() }}" execute-template < home/run_onchange_after_macos-defaults.sh.tmpl | shellcheck -
     stylua --config-path home/dot_config/nvim/dot_stylua.toml --check home/dot_config/nvim
     oxfmt --check

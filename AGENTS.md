@@ -29,6 +29,7 @@ package lists and the Neovim config.
     install script
   - `run_onchange_after_install-packages.sh.tmpl` - adopts hand-installed casks,
     runs `brew bundle` (warns on failure)
+  - `run_onchange_after_mas-apps.sh.tmpl` - installs App Store apps (`just mas`)
   - `create_dot_gitconfig.local`, `create_dot_local_extensions` - stubs created
     only if missing
   - `.chezmoiignore` - files chezmoi skips (`.envvars`)
@@ -49,7 +50,7 @@ directory files):
 
 - `bootstrap.sh`
 - `chezmoi apply`, `chezmoi init`, `chezmoi update`
-- `just apply`, `just update`, `just bootstrap`
+- `just apply`, `just update`, `just bootstrap`, `just mas`
 
 Read-only commands are fine: `just diff`, `just status`, `just missing`,
 `just lint`.

@@ -1,4 +1,3 @@
-{{- $darwin := eq .chezmoi.os "darwin" }}
 {{- $groups := list "all" .chezmoi.os (get . "machine") }}
 {{- range $groups }}
 {{- range dig . "taps" (list) $.packages }}
@@ -12,11 +11,4 @@ brew {{ . | quote }}
 {{- end }}
 {{- range includeTemplate "casks" . | fromJson }}
 cask {{ . | quote }}
-{{- end }}
-{{- if $darwin }}
-{{- range $groups }}
-{{- range dig . "mas" (list) $.packages }}
-mas {{ .name | quote }}, id: {{ .id }}
-{{- end }}
-{{- end }}
 {{- end -}}

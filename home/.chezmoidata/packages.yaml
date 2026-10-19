@@ -63,12 +63,7 @@ packages:
       - stats
       - tower
     mas:
-      - { name: AdBlock, id: 1402042596 }
-      - { name: 1Password for Safari, id: 1569813296 }
-      - { name: Unclutter, id: 577085396 }
       - { name: Xcode, id: 497799835 }
-      - { name: Bumpr, id: 1166066070 }
-      - { name: Vimari, id: 1480933944 }
   linux:
     brews: []
   personal:
@@ -77,6 +72,11 @@ packages:
     casks:
       - discord
     mas:
+      - { name: AdBlock, id: 1402042596 }
+      - { name: 1Password for Safari, id: 1569813296 }
+      - { name: Unclutter, id: 577085396 }
+      - { name: Bumpr, id: 1166066070 }
+      - { name: Vimari, id: 1480933944 }
       - { name: Things, id: 904280696 }
       - { name: NordVPN, id: 905953485 }
       - { name: Pixelmator Pro, id: 6746662575 }

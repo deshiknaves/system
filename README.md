@@ -52,6 +52,7 @@ Run `just --list` to see them all.
 | ------------ | ------------------------------------------------- |
 | `bootstrap`  | First-run setup on a fresh machine                |
 | `apply`      | Apply dotfiles and run the package install        |
+| `mas`        | Install App Store apps (sign in to the App Store) |
 | `diff`       | Show pending dotfile changes                      |
 | `status`     | Show files that differ from the source            |
 | `add <path>` | Add a file to the chezmoi source                  |
@@ -75,6 +76,9 @@ failed `brew bundle` prints a warning. The script also:
 
 - adopts casks you installed by hand (`brew install --cask --adopt`) when their
   `.app` is in `/Applications`
+
+App Store apps install in a separate script. If you are not signed in to the App
+Store it warns and stops. Sign in, then run `just mas`.
 
 `just missing` shows installed packages that are not in the lists.
 
@@ -117,6 +121,7 @@ zsh with [sheldon](https://sheldon.cli.rs) for plugins and
     the install script
   - `run_onchange_after_install-packages.sh.tmpl` - installs packages, adopts
     casks
+  - `run_onchange_after_mas-apps.sh.tmpl` - installs App Store apps
   - `dot_config/nvim/` - Neovim config (lazy.nvim)
   - `dot_config/{ghostty,sheldon}/`, `dot_config/starship.toml` - terminal and
     shell config
