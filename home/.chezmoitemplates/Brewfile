@@ -5,12 +5,10 @@
 brew {{ . | quote }}
 {{- end }}
 {{- end }}
-{{- if $darwin }}
-{{- range $groups }}
-{{- range dig . "casks" (list) $.packages }}
+{{- range includeTemplate "casks" . | fromJson }}
 cask {{ . | quote }}
 {{- end }}
-{{- end }}
+{{- if $darwin }}
 {{- range $groups }}
 {{- range dig . "mas" (list) $.packages }}
 mas {{ .name | quote }}, id: {{ .id }}

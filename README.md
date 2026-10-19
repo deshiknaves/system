@@ -71,7 +71,10 @@ Edit `home/.chezmoidata/packages.yaml`. Each group has `brews`, `casks` and
 
 Casks and `mas` apps install on macOS only. `just apply` runs the package script
 when the list changes. It runs after the dotfiles and never aborts the apply: a
-failed `brew bundle` prints a warning.
+failed `brew bundle` prints a warning. The script also:
+
+- adopts casks you installed by hand (`brew install --cask --adopt`) when their
+  `.app` is in `/Applications`
 
 `just missing` shows installed packages that are not in the lists.
 
@@ -109,7 +112,10 @@ zsh with [sheldon](https://sheldon.cli.rs) for plugins and
   - `.chezmoi.toml.tmpl` - chezmoi config and the machine prompt
   - `.chezmoidata/packages.yaml` - package lists
   - `.chezmoitemplates/Brewfile` - Brewfile built from the lists
-  - `run_onchange_after_install-packages.sh.tmpl` - installs packages
+  - `.chezmoitemplates/casks` - cask list as JSON, shared by the Brewfile and
+    the install script
+  - `run_onchange_after_install-packages.sh.tmpl` - installs packages, adopts
+    casks
   - `dot_config/nvim/` - Neovim config (lazy.nvim)
   - `dot_config/{ghostty,sheldon}/`, `dot_config/starship.toml` - terminal and
     shell config

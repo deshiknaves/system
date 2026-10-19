@@ -1,28 +1,84 @@
-#!/bin/bash
-
+#! /bin/bash
 set -e
 
-echo "🔍 Checking for Homebrew..."
-if ! command -v brew &>/dev/null; then
+CASKS=({{ range includeTemplate "casks" . | fromJson }}{{ . | quote }} {{ end }})
+
+load_brew() {
+  local brew_bin
   for brew_bin in /opt/homebrew/bin/brew /home/linuxbrew/.linuxbrew/bin/brew; do
     if [ -x "$brew_bin" ]; then
       eval "$("$brew_bin" shellenv)"
-      break
+      return
     fi
   done
-fi
+}
 
-if ! command -v brew &>/dev/null; then
-  echo "⚠ Homebrew not found, skipping package install"
-  exit 0
-fi
-echo "✅ Homebrew found"
+check_homebrew() {
+  echo "🔍 Checking for Homebrew..."
+  command -v brew &>/dev/null || load_brew
+  if ! command -v brew &>/dev/null; then
+    echo "⚠ Homebrew not found, skipping package install"
+    exit 0
+  fi
+  echo "✅ Homebrew found"
+}
 
-echo "⏳ Installing packages"
-if brew bundle --file=- <<'BREWFILE'; then
+ensure_jq() {
+  command -v jq &>/dev/null && return
+  echo "⏳ Installing jq"
+  brew install jq
+}
+
+# Prints "cask<TAB>app<TAB>app..." for each cask that ships .app bundles.
+cask_apps() {
+  brew info --json=v2 --cask "$@" |
+    jq -r '.casks[] | [.token, (.artifacts[] | objects | .app // empty | .[] | strings)] | select(length > 1) | @tsv'
+}
+
+# Casks installed by hand are adopted so brew bundle does not fail on them.
+adopt_casks() {
+  [ "${#CASKS[@]}" -gt 0 ] || return 0
+  echo "🔍 Checking for hand-installed casks..."
+
+  local installed cask missing=()
+  installed="$(brew list --cask)"
+  for cask in "${CASKS[@]}"; do
+    grep -qx "$cask" <<<"$installed" || missing+=("$cask")
+  done
+  if [ "${#missing[@]}" -eq 0 ]; then
+    echo "✅ No casks to adopt"
+    return
+  fi
+
+  ensure_jq
+  local fields app all_present
+  while IFS=$'\t' read -r -a fields; do
+    cask="${fields[0]}"
+    all_present=true
+    for app in "${fields[@]:1}"; do
+      [ -e "/Applications/$app" ] || all_present=false
+    done
+    $all_present || continue
+    echo "⏳ Adopting $cask"
+    brew install --cask --adopt "$cask" || echo "⚠ Could not adopt $cask"
+  done < <(cask_apps "${missing[@]}" || echo "⚠ Could not look up cask apps" >&2)
+}
+
+install_packages() {
+  echo "⏳ Installing packages"
+  if brew bundle --file=- <<'BREWFILE'; then
 {{- template "Brewfile" . }}
 BREWFILE
-  echo "✅ Packages installed"
-else
-  echo "⚠ Package install failed, continuing"
-fi
+    echo "✅ Packages installed"
+  else
+    echo "⚠ Package install failed, continuing"
+  fi
+}
+
+main() {
+  check_homebrew
+  adopt_casks
+  install_packages
+}
+
+main

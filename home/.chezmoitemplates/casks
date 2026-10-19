@@ -1,0 +1,7 @@
+{{- $casks := list }}
+{{- if eq .chezmoi.os "darwin" }}
+{{- range list "all" .chezmoi.os (get . "machine") }}
+{{- $casks = concat $casks (dig . "casks" (list) $.packages) }}
+{{- end }}
+{{- end }}
+{{- toJson $casks -}}
