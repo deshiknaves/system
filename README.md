@@ -116,6 +116,9 @@ zsh with [sheldon](https://sheldon.cli.rs) for plugins and
 - Prompt: `home/dot_config/starship.toml`
 - Node versions: [fnm](https://github.com/Schniz/fnm) switches on `cd` using
   `.nvmrc` or `.node-version`.
+- tmux plugins: [tpm](https://github.com/tmux-plugins/tpm) is cloned to
+  `~/.tmux/plugins/tpm` by `home/.chezmoiexternal.toml`. Press `prefix + I` in
+  tmux to install plugins.
 
 ## Layout
 
@@ -128,6 +131,7 @@ zsh with [sheldon](https://sheldon.cli.rs) for plugins and
 - `.github/workflows/` - CI lint
 - `home/` - chezmoi source
   - `.chezmoi.toml.tmpl` - chezmoi config and the machine prompt
+  - `.chezmoiexternal.toml` - clones tpm
   - `.chezmoidata/packages.yaml` - package lists
   - `.chezmoitemplates/Brewfile` - Brewfile built from the lists
   - `.chezmoitemplates/casks` - cask list as JSON, shared by the Brewfile and
