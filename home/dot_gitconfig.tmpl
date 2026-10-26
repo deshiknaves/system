@@ -3,5 +3,30 @@
 {{- if eq (get . "machine") "personal" }}
 	email = nawalsrahim@gmail.com
 {{- end }}
+[init]
+	defaultBranch = main
+[fetch]
+	prune = true
+[push]
+	default = current
+[color]
+	ui = auto
+	interactive = auto
+[log]
+	date = relative
+[alias]
+	aa = !git add .
+	a = !git add . && git status
+	au = !git add -u . && git status
+	br = branch
+	c = commit
+	ca = commit --amend
+	co = checkout
+	cob = checkout -b
+	df = diff --color-words
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit
+	lp = log -p
+	pushf = push --force-with-lease
+	st = status
 [include]
 	path = ~/.gitconfig.local
