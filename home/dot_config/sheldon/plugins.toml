@@ -23,7 +23,7 @@ use = ["git.zsh"]
 [plugins.omz]
 github = "ohmyzsh/ohmyzsh"
 dir = "plugins"
-use = ["{git,docker,docker-compose}/*.plugin.zsh"]
+use = ["{git,docker,docker-compose,vi-mode}/*.plugin.zsh"]
 
 [plugins.zsh-better-npm-completion]
 github = "lukechilds/zsh-better-npm-completion"
