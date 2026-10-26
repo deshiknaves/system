@@ -93,7 +93,7 @@ Store it warns and stops. Sign in, then run `just mas`.
 
 `just missing` shows installed packages that are not in the lists. `just backup`
 copies every file that `chezmoi status` reports into
-`~/.dotfiles-backup/<timestamp>/` before you overwrite it.
+`~/backups/system/<timestamp>/` before you overwrite it.
 
 Homebrew refuses untrusted third-party taps, so prefer core formulae and casks.
 Fonts are casks (`font-*`).

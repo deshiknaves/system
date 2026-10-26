@@ -38,11 +38,11 @@ update:
 mas:
     chezmoi --source "{{ justfile_directory() }}" execute-template < home/run_onchange_after_mas-apps.sh.tmpl | bash
 
-# Copy files that differ from the source into ~/.dotfiles-backup/<timestamp>
+# Copy files that differ from the source into ~/backups/system/<timestamp>
 backup:
     #! /bin/bash
     set -e
-    dest="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
+    dest="$HOME/backups/system/$(date +%Y%m%d-%H%M%S)"
     count=0
     while IFS= read -r rel; do
       if [ -e "$HOME/$rel" ]; then
