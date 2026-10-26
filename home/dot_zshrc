@@ -7,6 +7,9 @@ source ~/.aliases
 
 eval "$(sheldon source)"
 
+# vi-mode switches on Esc after 0.4s by default
+KEYTIMEOUT=1
+
 export PATH="$HOME/.cargo/bin:$HOME/.local/bin:$PATH"
 
 [[ -d $HOMEBREW_PREFIX/opt/openjdk/bin ]] && export PATH="$HOMEBREW_PREFIX/opt/openjdk/bin:$PATH"
