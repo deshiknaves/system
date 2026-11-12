@@ -12,7 +12,9 @@ apply:
     set -e
     source "{{ justfile_directory() }}/scripts/sudo-keepalive.sh"
     keep_sudo_alive
-    chezmoi apply
+    # chezmoi probes the terminal (OSC 11 + DSR); a late reply over a remote
+    # link lands in the sudo prompt or as raw-mode garbage. TERM=dumb skips it.
+    TERM=dumb chezmoi apply
 
 # Show pending dotfile changes
 diff:
@@ -32,7 +34,9 @@ update:
     set -e
     source "{{ justfile_directory() }}/scripts/sudo-keepalive.sh"
     keep_sudo_alive
-    chezmoi update
+    # chezmoi probes the terminal (OSC 11 + DSR); a late reply over a remote
+    # link lands in the sudo prompt or as raw-mode garbage. TERM=dumb skips it.
+    TERM=dumb chezmoi update
 
 # Install App Store apps (sign in to the App Store first)
 mas:
