@@ -1,6 +1,9 @@
 {{- $machine := promptChoiceOnce . "machine" "Machine type" (list "personal" "work") -}}
 sourceDir = {{ joinPath .chezmoi.homeDir "Developer" "system" | quote }}
 mode = "symlink"
+# The external download's progress bar leaves the TTY raw while scripts run,
+# so brew output staircases.
+progress = false
 
 [data]
 machine = {{ $machine | quote }}
