@@ -1,10 +1,13 @@
 #!/bin/bash
-# Opens a markdown file in an nvim split (render-markdown.nvim) right of the focused Rex pane when Rex
-# is frontmost; otherwise hands it to Obsidian. Called by "Rex Markdown.app".
+# Opens a markdown file in nvim (render-markdown.nvim) beside the Rex pane that
+# shows its path: a split right of it, or a new tab once its tab has more than
+# two panes. Falls back to Obsidian when Rex isn't frontmost or no pane matches.
+# Called by "Rex Markdown.app".
 export PATH="$HOME/Library/Application Support/com.superlogical.rex/RexServer/Versions/Current/Rex Server.app/Contents/MacOS:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
 
 file=$1
 fallback_app=Obsidian
+max_panes_before_tab=2
 
 open_in_fallback() {
   open -a "$fallback_app" "$file"
@@ -16,16 +19,70 @@ frontmost_app() {
   lsappinfo visibleProcessList | grep -o '"[^"]*"' | tr -d '"' | grep -vx 'Rex_Markdown' | head -1
 }
 
-front=$(frontmost_app)
+app_session_ids() {
+  rex client ls --json | jq -r '.clients[] | select(.info.kind == "app" and .info.platform == "macos") | .session_ids[]'
+}
+
+# Prints "session window block" for each block in each session's visible tab,
+# the focused block first.
+visible_blocks() {
+  local session
+  for session in $(app_session_ids); do
+    rex session inspect "$session" --json | jq -r --arg session "$session" '
+      . as $view
+      | $view.windows[]
+      | select(.window_id == $view.active_window_id)
+      | . as $window
+      | ([$window.focused_block_id] + [$window | .. | .block_id? // empty])
+      | reduce .[] as $id ([]; if any(.[]; . == $id) then . else . + [$id] end)
+      | .[]
+      | "\($session) \($window.window_id) \(.)"'
+  done
+}
+
+foreground_program() {
+  rex block call -s "$1" -b "$2" process '{}' | jq -r '.foreground.name // empty'
+}
+
+screen_text() {
+  local session=$1 block=$2 rows
+  rows=$(rex block call -s "$session" -b "$block" size '{}' | jq -r '.rows // 120')
+  rex capture -s "$session" -b "$block" --unwrap | tail -n "$rows"
+}
+
+# The clicked link is on screen in the pane it came from. Full and ~ paths beat
+# a bare filename; Rex doesn't report which session the app is showing.
+find_source_pane() {
+  local tilde_path="~${file#"$HOME"}" filename session window block text basename_match=""
+  filename=$(basename "$file")
+  while read -r session window block; do
+    [[ $(foreground_program "$session" "$block") == nvim ]] && continue
+    text=$(screen_text "$session" "$block")
+    if grep -qF -e "$file" -e "$tilde_path" <<<"$text"; then
+      echo "$session $window $block"
+      return 0
+    fi
+    if [[ -z $basename_match ]] && grep -qF -e "$filename" <<<"$text"; then
+      basename_match="$session $window $block"
+    fi
+  done < <(visible_blocks)
+  [[ -n $basename_match ]] && echo "$basename_match"
+}
+
+pane_count() {
+  local session=$1 window=$2
+  rex block ls -s "$session" --json | jq --arg window "$window" '[.blocks[] | select(.window_id == $window)] | length'
+}
 
 [[ -f $file ]] || open_in_fallback
-[[ $front == Rex_Beta ]] || open_in_fallback
+[[ $(frontmost_app) == Rex_Beta ]] || open_in_fallback
 
-session=$(rex client ls --json | jq -r 'first(.clients[] | select(.info.kind == "app" and .info.platform == "macos") | .session_ids[0] // empty)')
-[[ -n $session ]] || open_in_fallback
-
-block=$(rex session inspect "$session" --json | jq -r '. as $s | .windows[] | select(.window_id == $s.active_window_id) | .focused_block_id')
+read -r session window block <<<"$(find_source_pane)"
 [[ -n $block ]] || open_in_fallback
 
-rex split -s "$session" -b "$block" --split=right -- nvim "$file" >/dev/null || open_in_fallback
+if (($(pane_count "$session" "$window") > max_panes_before_tab)); then
+  rex window new -s "$session" "$(basename "$file")" -- nvim "$file" >/dev/null || open_in_fallback
+else
+  rex split -s "$session" -b "$block" --split=right -- nvim "$file" >/dev/null || open_in_fallback
+fi
 open -a "Rex Beta"
