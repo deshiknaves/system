@@ -61,6 +61,7 @@ packages:
       - microsoft-edge
       - obsidian
       - raycast
+      - session-manager-plugin
       - stats
       - tower
     mas:
