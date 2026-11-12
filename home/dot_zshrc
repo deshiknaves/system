@@ -7,6 +7,23 @@ source ~/.aliases
 
 eval "$(sheldon source)"
 
+# macOS /etc/zshrc sets history; Linux leaves HISTFILE unset and nothing is kept.
+HISTFILE=~/.zsh_history
+HISTSIZE=50000
+SAVEHIST=50000
+setopt EXTENDED_HISTORY SHARE_HISTORY HIST_IGNORE_DUPS HIST_REDUCE_BLANKS
+
+# After sheldon: the vi-mode plugin resets the keymap.
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+for keymap in viins emacs; do
+  bindkey -M $keymap '^[[A' up-line-or-beginning-search
+  bindkey -M $keymap '^[OA' up-line-or-beginning-search
+  bindkey -M $keymap '^[[B' down-line-or-beginning-search
+  bindkey -M $keymap '^[OB' down-line-or-beginning-search
+done
+
 # vi-mode switches on Esc after 0.4s by default
 KEYTIMEOUT=1
 
