@@ -1,2 +1,5 @@
 .envvars
 **/.DS_Store
+{{ if ne .chezmoi.os "darwin" }}
+.local/bin/rex-open-md
+{{ end }}

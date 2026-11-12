@@ -1,0 +1,32 @@
+#!/bin/bash
+# Opens a markdown file in a glow split right of the focused Rex pane when Rex
+# is frontmost; otherwise hands it to Obsidian. Called by "Rex Markdown.app".
+export PATH="$HOME/Library/Application Support/com.superlogical.rex/RexServer/Versions/Current/Rex Server.app/Contents/MacOS:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
+
+file=$1
+fallback_app=Obsidian
+
+open_in_fallback() {
+  open -a "$fallback_app" "$file"
+  exit 0
+}
+
+# lsappinfo lists apps front to back; the helper app itself may be on top.
+frontmost_app() {
+  lsappinfo visibleProcessList | grep -o '"[^"]*"' | tr -d '"' | grep -vx 'Rex_Markdown' | head -1
+}
+
+front=$(frontmost_app)
+
+[[ -f $file ]] || open_in_fallback
+[[ $front == Rex_Beta ]] || open_in_fallback
+
+session=$(rex client ls --json | jq -r 'first(.clients[] | select(.info.kind == "app" and .info.platform == "macos") | .session_ids[0] // empty)')
+[[ -n $session ]] || open_in_fallback
+
+block=$(rex session inspect "$session" --json | jq -r '. as $s | .windows[] | select(.window_id == $s.active_window_id) | .focused_block_id')
+[[ -n $block ]] || open_in_fallback
+
+# A fixed style: glow's auto style hangs probing Rex for its background color.
+rex split -s "$session" -b "$block" --split=right -- glow -s dark -p "$file" >/dev/null || open_in_fallback
+open -a "Rex Beta"

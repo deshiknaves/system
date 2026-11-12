@@ -1,0 +1,41 @@
+#! /bin/bash
+set -e
+{{ if eq .chezmoi.os "darwin" }}
+echo "⏳ Building Rex Markdown.app"
+
+app="$HOME/Applications/Rex Markdown.app"
+plist="$app/Contents/Info.plist"
+lsregister=/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister
+
+mkdir -p "$HOME/Applications"
+rm -rf "$app"
+osacompile -o "$app" <<'APPLESCRIPT'
+on open theFiles
+	repeat with theFile in theFiles
+		do shell script "$HOME/.local/bin/rex-open-md " & quoted form of POSIX path of theFile & " >/dev/null 2>&1 &"
+	end repeat
+end open
+APPLESCRIPT
+
+plutil -replace CFBundleIdentifier -string com.deshi.rex-markdown "$plist"
+plutil -replace LSUIElement -bool true "$plist"
+plutil -replace CFBundleDocumentTypes -json '[{"CFBundleTypeName":"Markdown","CFBundleTypeRole":"Viewer","LSHandlerRank":"Alternate","LSItemContentTypes":["net.daringfireball.markdown"]}]' "$plist"
+# Editing Info.plist invalidates osacompile's ad-hoc signature.
+codesign --force --deep --sign - "$app"
+"$lsregister" -f "$app"
+
+swift - "$app" <<'SWIFT'
+import AppKit
+import UniformTypeIdentifiers
+
+let app = URL(fileURLWithPath: CommandLine.arguments[1])
+let done = DispatchSemaphore(value: 0)
+NSWorkspace.shared.setDefaultApplication(at: app, toOpen: UTType("net.daringfireball.markdown")!) { error in
+  if let error { print("⚠ Could not make Rex Markdown the .md default: \(error)") }
+  done.signal()
+}
+done.wait()
+SWIFT
+
+echo "✅ Rex Markdown.app is the default for .md files"
+{{ end }}

@@ -67,9 +67,10 @@ hooks:
 
 # Shellcheck, stylua and oxfmt checks
 lint:
-    shellcheck bootstrap.sh scripts/sudo-keepalive.sh .githooks/pre-commit
+    shellcheck bootstrap.sh scripts/sudo-keepalive.sh .githooks/pre-commit home/private_dot_local/bin/executable_rex-open-md
     chezmoi --source "{{ justfile_directory() }}" execute-template < home/run_onchange_after_install-packages.sh.tmpl | shellcheck -
     chezmoi --source "{{ justfile_directory() }}" execute-template < home/run_onchange_after_mas-apps.sh.tmpl | shellcheck -
     chezmoi --source "{{ justfile_directory() }}" execute-template < home/run_onchange_after_macos-defaults.sh.tmpl | shellcheck -
+    chezmoi --source "{{ justfile_directory() }}" execute-template < home/run_onchange_after_rex-markdown-app.sh.tmpl | shellcheck -
     stylua --config-path home/dot_config/nvim/dot_stylua.toml --check home/dot_config/nvim
     oxfmt --check
