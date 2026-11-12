@@ -1,5 +1,5 @@
 #!/bin/bash
-# Opens a markdown file in a glow split right of the focused Rex pane when Rex
+# Opens a markdown file in an nvim split (render-markdown.nvim) right of the focused Rex pane when Rex
 # is frontmost; otherwise hands it to Obsidian. Called by "Rex Markdown.app".
 export PATH="$HOME/Library/Application Support/com.superlogical.rex/RexServer/Versions/Current/Rex Server.app/Contents/MacOS:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
 
@@ -27,6 +27,5 @@ session=$(rex client ls --json | jq -r 'first(.clients[] | select(.info.kind == 
 block=$(rex session inspect "$session" --json | jq -r '. as $s | .windows[] | select(.window_id == $s.active_window_id) | .focused_block_id')
 [[ -n $block ]] || open_in_fallback
 
-# A fixed style: glow's auto style hangs probing Rex for its background color.
-rex split -s "$session" -b "$block" --split=right -- glow -s dark -p "$file" >/dev/null || open_in_fallback
+rex split -s "$session" -b "$block" --split=right -- nvim "$file" >/dev/null || open_in_fallback
 open -a "Rex Beta"
