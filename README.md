@@ -80,6 +80,9 @@ and `mas`:
 - `darwin`, `linux`: by OS
 - `personal`, `work`: by machine type (optional sections)
 
+An OS group's `skip` list drops brews from every group on that OS. Linux skips
+`colima`, `docker` and `tailscale`, which come from apt.
+
 Casks and `mas` apps install on macOS only. `just apply` runs the package script
 when the list changes. It runs after the dotfiles and never aborts the apply: a
 failed `brew bundle` prints a warning. The script also:

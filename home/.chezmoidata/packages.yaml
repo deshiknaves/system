@@ -68,6 +68,11 @@ packages:
       - { name: Xcode, id: 497799835 }
   linux:
     brews: []
+    # Installed from apt with their services; brew copies would shadow them.
+    skip:
+      - colima
+      - docker
+      - tailscale
   personal:
     brews:
       - tailscale
